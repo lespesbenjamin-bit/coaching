@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réserver un cours collectif — Benjamin Lespes, Coach Padel Toulouse</title>
+<meta name="description" content="Consultez le remplissage des groupes de cours collectifs de padel à l'Ace Padel Club de Colomiers (Toulouse) et réservez votre place.">
+<style>
+/* ==========================================================================
+   CONFIGURATION VISUELLE — TOKENS DE COULEUR / TYPO / ESPACEMENT
+   ========================================================================== */
+:root{
+  --black: #0b0d0c;
+  --black-soft: #15181a;
+  --black-card: #191d1a;
+  --yellow: #d9ff3f;
+  --yellow-dark: #b8db1f;
+  --white: #ffffff;
+  --gray-light: #f4f4f1;
+  --gray-line: #e7e7e2;
+  --gray-mid: #6d7168;
+  --gray-mid-dark: #9a9d94;
+
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+
+  --shadow-soft: 0 12px 30px rgba(0,0,0,0.08);
+  --shadow-dark: 0 20px 40px rgba(0,0,0,0.35);
+
+  --section-pad: clamp(64px, 9vw, 120px);
+  --container: 1180px;
+
+  --font-display: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-body: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+body{
+  margin:0;
+  font-family: var(--font-body);
+  color: var(--black);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+ul{ margin:0; padding:0; list-style:none; }
+button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+h1,h2,h3,h4{ font-family: var(--font-display); margin:0; letter-spacing:-0.02em; line-height:1.05; }
+p{ margin:0; }
+
+.container{ max-width: var(--container); margin:0 auto; padding: 0 24px; }
+.section{ padding: var(--section-pad) 0; }
+.section--dark{ background: var(--black); color: var(--white); }
+.section--tint{ background: var(--gray-light); }
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size: 13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+  color: var(--black);
+  margin-bottom: 18px;
+}
+.eyebrow::before{
+  content:""; width:22px; height:2px; background: var(--yellow-dark); display:inline-block; border-radius:2px;
+}
+.section--dark .eyebrow, .section--dark .eyebrow::before{ color: var(--yellow); background: var(--yellow); }
+
+.section-head{ max-width: 640px; margin-bottom: 48px; }
+.section-title{ font-size: clamp(28px, 4vw, 44px); font-weight: 800; }
+.section-sub{ margin-top:14px; color: var(--gray-mid); font-size:17px; }
+.section--dark .section-sub{ color: var(--gray-mid-dark); }
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding: 15px 28px; border-radius: 100px; font-weight:700; font-size:15px;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  white-space: nowrap;
+}
+.btn-primary{ background: var(--yellow); color: var(--black); box-shadow: 0 8px 20px rgba(217,255,63,0.35); }
+.btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 14px 28px rgba(217,255,63,0.45); background: var(--yellow-dark); }
+.btn-outline{ background: transparent; color: var(--black); border: 1.5px solid var(--black); }
+.btn-outline:hover{ transform: translateY(-2px); background: var(--black); color: var(--white); }
+.section--dark .btn-outline{ color: var(--white); border-color: rgba(255,255,255,0.4); }
+.section--dark .btn-outline:hover{ background: var(--white); color: var(--black); }
+.btn-block{ width:100%; }
+.btn-sm{ padding: 10px 18px; font-size: 13px; }
+
+/* ==========================================================================
+   NAVIGATION
+   ========================================================================== */
+.navbar{
+  position: fixed; top:0; left:0; right:0; z-index: 1000;
+  background: rgba(11,13,12,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: transform .3s ease;
+}
+.navbar .container{ display:flex; align-items:center; justify-content:space-between; height: 74px; }
+.nav-brand{ display:flex; flex-direction:column; color:var(--white); }
+.nav-brand strong{ font-family: var(--font-display); font-weight:800; font-size:17px; letter-spacing:-0.01em; }
+.nav-brand span{ font-size:11px; color: var(--yellow); text-transform:uppercase; letter-spacing:0.1em; font-weight:700; }
+.nav-links{ display:flex; align-items:center; gap: 30px; }
+.nav-links a{ color: rgba(255,255,255,0.78); font-size:14px; font-weight:600; transition: color .2s ease; position:relative; }
+.nav-links a:hover{ color: var(--white); }
+.nav-links a::after{
+  content:""; position:absolute; left:0; bottom:-6px; width:0; height:2px; background: var(--yellow);
+  transition: width .2s ease;
+}
+.nav-links a:hover::after{ width:100%; }
+.nav-cta{ display:flex; align-items:center; gap:14px; }
+.nav-toggle{
+  display:none; width:42px; height:42px; border-radius:10px; background: rgba(255,255,255,0.08);
+  align-items:center; justify-content:center; flex-direction:column; gap:5px;
+}
+.nav-toggle span{ width:20px; height:2px; background:var(--white); border-radius:2px; transition: all .25s ease; }
+.nav-toggle.is-open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2){ opacity:0; }
+.nav-toggle.is-open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+.nav-mobile-panel{
+  display:none;
+  position: fixed; top:74px; left:0; right:0; bottom:0; z-index:999;
+  background: var(--black); padding: 30px 24px; overflow-y:auto;
+  transform: translateY(-8px); opacity:0; pointer-events:none; transition: all .25s ease;
+}
+.nav-mobile-panel.is-open{ transform: translateY(0); opacity:1; pointer-events:auto; }
+.nav-mobile-panel a{
+  display:block; color: var(--white); font-size:20px; font-weight:700; padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.nav-mobile-panel .btn{ margin-top:24px; }
+
+@media (max-width: 900px){
+  .nav-links{ display:none; }
+  .nav-cta .btn-primary.desktop-only{ display:none; }
+  .nav-toggle{ display:flex; }
+  .nav-mobile-panel{ display:block; }
+}
+
+/* ==========================================================================
+   ACCUEIL / HERO
+   ========================================================================== */
+.hero{
+  position:relative; background: var(--black); color: var(--white);
+  padding: 160px 0 100px; overflow:hidden;
+}
+.hero::before{
+  /* signature graphique : lignes de terrain de padel en filigrane */
+  content:""; position:absolute; inset:0; pointer-events:none; opacity:0.5;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(circle at 75% 30%, black, transparent 65%);
+}
+.hero-grid{
+  position:relative; z-index:1;
+  display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items:start;
+  grid-template-areas: "intro photo" "cta photo";
+}
+.hero-intro{ grid-area: intro; }
+.hero-cta{ grid-area: cta; }
+.hero-kicker{
+  display:inline-flex; align-items:center; gap:10px; padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,0.18); border-radius:100px; font-size:13px; font-weight:700;
+  color: var(--yellow); margin-bottom: 26px;
+}
+.hero-kicker .dot{ width:7px; height:7px; border-radius:50%; background: var(--yellow); box-shadow: 0 0 0 4px rgba(217,255,63,0.2); }
+.hero h1{ font-size: clamp(38px, 5.4vw, 68px); font-weight:800; }
+.hero h1 em{ font-style:normal; color: var(--yellow); }
+.hero .tagline{ font-size: clamp(18px, 2vw, 22px); font-weight:600; margin-top:18px; color: rgba(255,255,255,0.9); }
+.hero p.desc{ margin-top:20px; color: rgba(255,255,255,0.65); font-size:16px; max-width:520px; }
+.hero-actions{ display:flex; gap:16px; margin-top:34px; flex-wrap:wrap; }
+.hero-note{ margin-top:26px; font-size:14px; color: rgba(255,255,255,0.55); display:flex; align-items:center; gap:10px; }
+.hero-note::before{ content:"📍"; }
+
+.hero-photo{
+  grid-area: photo;
+  position:relative; border-radius: var(--radius-lg); overflow:hidden;
+  aspect-ratio: 4/5; background: linear-gradient(160deg, #23271f, #0e100e);
+  border: 1px solid rgba(255,255,255,0.1);
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  box-shadow: var(--shadow-dark);
+}
+.hero-photo img{ width:100%; height:100%; object-fit:cover; object-position: center 15%; }
+.hero-photo .placeholder-tag{
+  position:absolute; top:18px; left:18px; background: var(--yellow); color: var(--black);
+  font-size:12px; font-weight:800; padding:8px 14px; border-radius:100px; text-transform:uppercase; letter-spacing:0.05em;
+}
+.hero-photo .placeholder-body{ color: rgba(255,255,255,0.5); font-size:15px; padding: 0 30px; }
+.hero-photo .placeholder-body strong{ display:block; color:#fff; font-size:17px; margin-bottom:8px; }
+
+@media (max-width: 900px){
+  .hero{ padding: 130px 0 70px; }
+  .hero-grid{
+    grid-template-columns: 1fr; gap:32px;
+    grid-template-areas: "intro" "photo" "cta";
+  }
+  .hero-photo{ aspect-ratio: 16/10; }
+}
+
+/* ==========================================================================
+   BÉNÉFICES
+   ========================================================================== */
+.benefits-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:22px; }
+.benefit-card{
+  background: var(--white); border: 1px solid var(--gray-line); border-radius: var(--radius-md);
+  padding: 30px 26px; transition: transform .2s ease, box-shadow .2s ease;
+}
+.benefit-card:hover{ transform: translateY(-6px); box-shadow: var(--shadow-soft); }
+.benefit-icon{
+  width:46px; height:46px; border-radius:12px; background: var(--black); color:var(--yellow);
+  display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:18px;
+}
+.benefit-card h3{ font-size:18px; font-weight:800; margin-bottom:10px; }
+.benefit-card p{ color: var(--gray-mid); font-size:15px; }
+@media (max-width: 900px){
+  .benefits-grid{ grid-template-columns: repeat(3, 1fr); gap:12px; }
+  .benefit-card{ padding: 18px 12px; text-align:center; }
+  .benefit-icon{ width:36px; height:36px; font-size:16px; margin: 0 auto 12px; border-radius:10px; }
+  .benefit-card h3{ font-size:14px; margin-bottom:6px; }
+  .benefit-card p{ display:none; }
+}
+@media (max-width: 480px){
+  .benefits-grid{ gap:8px; }
+  .benefit-card{ padding: 14px 8px; }
+  .benefit-card h3{ font-size:12.5px; }
+}
+
+/* ==========================================================================
+   COACHING INDIVIDUEL
+   ========================================================================== */
+.solo-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items:center; }
+.solo-card{
+  background: var(--black); color: var(--white); border-radius: var(--radius-lg);
+  padding: 40px; position:relative; overflow:hidden;
+}
+.solo-card::after{
+  content:""; position:absolute; width:220px; height:220px; border-radius:50%;
+  background: var(--yellow); opacity:0.12; right:-70px; top:-70px;
+}
+.solo-price{ display:flex; align-items:baseline; gap:8px; margin: 18px 0 8px; }
+.solo-price .amount{ font-size: 56px; font-weight:800; color: var(--yellow); }
+.solo-price .unit{ color: rgba(255,255,255,0.55); font-size:15px; }
+.solo-list{ margin: 26px 0 30px; display:flex; flex-direction:column; gap:14px; }
+.solo-list li{ display:flex; gap:12px; font-size:15px; color: rgba(255,255,255,0.85); }
+.solo-list li::before{ content:"✓"; color: var(--yellow); font-weight:800; }
+.discovery-box{
+  border-radius: var(--radius-md); border: 1px dashed var(--gray-mid-dark);
+  padding: 24px; background: var(--gray-light);
+}
+.discovery-box h4{ font-size:16px; font-weight:800; margin-bottom:8px; }
+.discovery-box p{ color: var(--gray-mid); font-size:14px; }
+.discovery-badge{
+  display:inline-block; background:var(--yellow); color:var(--black); font-size:11px; font-weight:800;
+  padding:4px 10px; border-radius:100px; text-transform:uppercase; margin-bottom:12px;
+}
+@media (max-width: 900px){ .solo-grid{ grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   PACKS
+   ========================================================================== */
+.packs-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; }
+.pack-card{
+  background: var(--white); border: 1px solid var(--gray-line); border-radius: var(--radius-lg);
+  padding: 34px; display:flex; flex-direction:column; transition: transform .2s ease, box-shadow .2s ease;
+}
+.pack-card:hover{ transform: translateY(-6px); box-shadow: var(--shadow-soft); }
+.pack-card.is-featured{ border: 2px solid var(--black); position:relative; }
+.pack-badge{
+  position:absolute; top:-14px; left:34px; background: var(--yellow); color:var(--black);
+  font-size:12px; font-weight:800; padding:6px 14px; border-radius:100px; text-transform:uppercase; letter-spacing:0.03em;
+}
+.pack-name{ font-size:22px; font-weight:800; }
+.pack-sub{ color: var(--gray-mid); font-size:14px; margin-top:6px; }
+.pack-price{ margin: 22px 0; display:flex; align-items:baseline; gap:8px; }
+.pack-price .amount{ font-size:40px; font-weight:800; }
+.pack-price .unit{ color: var(--gray-mid); font-size:14px; }
+.pack-save{
+  display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:#4d7a1f;
+  background:#eefadd; padding:6px 12px; border-radius:100px; width:fit-content; margin-bottom:18px;
+}
+.pack-list{ display:flex; flex-direction:column; gap:12px; margin-bottom:22px; flex-grow:1; }
+.pack-list li{ display:flex; gap:10px; font-size:14.5px; color: var(--black); }
+.pack-list li::before{ content:"—"; color: var(--gray-mid-dark); flex-shrink:0; }
+.pack-bonus{
+  background: var(--black); color:var(--white); border-radius: var(--radius-sm);
+  padding: 16px 18px; margin-bottom:22px;
+}
+.pack-bonus .bonus-tag{ color: var(--yellow); font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; }
+.pack-bonus ul{ margin-top:10px; display:flex; flex-direction:column; gap:8px; }
+.pack-bonus li{ font-size:14px; display:flex; gap:8px; }
+.pack-bonus li::before{ content:"★"; color: var(--yellow); }
+@media (max-width: 980px){
+  .packs-grid{ grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .pack-card{ padding: 18px 14px; }
+  .pack-badge{ left:14px; top:-11px; font-size:10px; padding:4px 10px; }
+  .pack-name{ font-size:15px; }
+  .pack-sub{ font-size:11.5px; margin-top:4px; }
+  .pack-price{ margin: 14px 0; gap:4px; }
+  .pack-price .amount{ font-size:22px; }
+  .pack-price .unit{ font-size:10.5px; }
+  .pack-save{ font-size:10.5px; padding:4px 8px; margin-bottom:12px; }
+  .pack-list{ gap:8px; margin-bottom:14px; }
+  .pack-list li{ font-size:11.5px; gap:6px; }
+  .pack-bonus{ padding:10px 12px; margin-bottom:14px; }
+  .pack-bonus .bonus-tag{ font-size:10px; }
+  .pack-bonus li{ font-size:11px; }
+  .pack-card .btn{ font-size:11.5px; padding:10px 8px; }
+}
+@media (max-width: 560px){
+  .packs-grid{ grid-template-columns: 1fr; gap:18px; }
+  .pack-card{ padding: 30px; }
+  .pack-badge{ left:30px; top:-13px; font-size:12px; padding:6px 14px; }
+  .pack-name{ font-size:20px; }
+  .pack-sub{ font-size:13px; }
+  .pack-price .amount{ font-size:34px; }
+  .pack-price .unit{ font-size:13px; }
+  .pack-save{ font-size:12.5px; padding:6px 12px; }
+  .pack-list li{ font-size:13.5px; }
+  .pack-bonus li{ font-size:13px; }
+  .pack-card .btn{ font-size:14px; padding:14px 20px; }
+}
+
+/* ==========================================================================
+   COURS COLLECTIFS
+   ========================================================================== */
+.collectif-info{ display:grid; grid-template-columns: repeat(5, 1fr); gap:14px; margin-bottom:50px; }
+.info-chip{
+  background: var(--white); border:1px solid var(--gray-line); border-radius: var(--radius-sm);
+  padding: 18px 14px; text-align:center; font-weight:700; font-size:14px;
+}
+.info-chip span{ display:block; font-size:11px; font-weight:700; color: var(--gray-mid); text-transform:uppercase; margin-top:4px; letter-spacing:0.05em;}
+@media (max-width: 900px){ .collectif-info{ grid-template-columns: repeat(2,1fr); } }
+
+.formules-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:22px; }
+.formule-card{
+  border-radius: var(--radius-lg); padding: 32px; background: var(--gray-light); border: 1px solid var(--gray-line);
+}
+.formule-card.is-peak{ background: var(--black); color: var(--white); }
+.formule-card h3{ font-size:20px; font-weight:800; margin-bottom:6px; }
+.formule-price{ font-size:36px; font-weight:800; margin: 14px 0; }
+.formule-card.is-peak .formule-price{ color: var(--yellow); }
+.formule-note{ margin-top: 26px; font-size:14px; color: var(--gray-mid); text-align:center; }
+@media (max-width: 800px){
+  .formules-grid{ gap:12px; }
+  .formule-card{ padding: 18px 14px; }
+  .formule-card h3{ font-size:15px; margin-bottom:4px; }
+  .formule-card > p{ font-size:11.5px !important; }
+  .formule-price{ font-size:24px; margin: 10px 0; }
+}
+@media (max-width: 420px){
+  .formules-grid{ grid-template-columns: 1fr; gap:16px; }
+  .formule-card{ padding: 28px; }
+  .formule-card h3{ font-size:20px; }
+  .formule-card > p{ font-size:14px !important; }
+  .formule-price{ font-size:32px; margin: 12px 0; }
+}
+
+/* ==========================================================================
+   PLANNING
+   ========================================================================== */
+.planning-filters{
+  display:flex; flex-wrap:wrap; gap:12px; margin-bottom: 36px; padding: 18px;
+  background: var(--gray-light); border-radius: var(--radius-md);
+}
+.filter-group{ display:flex; flex-direction:column; gap:6px; }
+.filter-group label{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color: var(--gray-mid); }
+.filter-group select{
+  padding: 10px 14px; border-radius: 100px; border: 1px solid var(--gray-line); background: var(--white);
+  font-size: 14px; font-weight:600; color: var(--black); min-width:150px;
+}
+
+.planning-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.slot-card{
+  background: var(--white); border:1px solid var(--gray-line); border-radius: var(--radius-md);
+  padding: 24px; transition: transform .2s ease, box-shadow .2s ease;
+}
+.slot-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+.slot-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+.slot-day{ font-size:17px; font-weight:800; }
+.slot-time{ color: var(--gray-mid); font-size:14px; margin-top:2px; }
+.slot-level{
+  background: var(--black); color:var(--yellow); font-size:12px; font-weight:800;
+  padding: 6px 12px; border-radius:100px; text-transform:uppercase;
+}
+.slot-name{ font-size:14px; font-weight:700; color: var(--gray-mid); margin-bottom:14px; }
+.slot-formule{ display:inline-block; font-size:12px; font-weight:700; color: var(--black); background: var(--gray-light); padding:4px 10px; border-radius:100px; margin-bottom:16px; }
+
+.gauge-row{ display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+.gauge-track{ flex-grow:1; height:9px; border-radius:100px; background: var(--gray-line); overflow:hidden; }
+.gauge-fill{ height:100%; border-radius:100px; transition: width .4s ease; }
+.gauge-fill.level-ok{ background: linear-gradient(90deg, var(--yellow-dark), var(--yellow)); }
+.gauge-fill.level-warn{ background: #ff9f40; }
+.gauge-fill.level-full{ background: #c7c9c2; }
+.gauge-label{ font-size:13px; font-weight:700; white-space:nowrap; }
+
+.slot-status{ font-size:13px; font-weight:800; margin-bottom:18px; display:inline-flex; align-items:center; gap:6px; }
+.slot-status::before{ content:""; width:8px; height:8px; border-radius:50%; }
+.slot-status.status-ok{ color:#4d7a1f; } .slot-status.status-ok::before{ background:#4d7a1f; }
+.slot-status.status-warn{ color:#b56a12; } .slot-status.status-warn::before{ background:#b56a12; }
+.slot-status.status-full{ color:#8a8d85; } .slot-status.status-full::before{ background:#8a8d85; }
+
+.no-results{ grid-column: 1 / -1; text-align:center; padding: 50px 20px; color: var(--gray-mid); }
+
+@media (max-width: 800px){ .planning-grid{ grid-template-columns: 1fr; } }
+
+
+/* ==========================================================================
+   À PROPOS
+   ========================================================================== */
+.about-grid{ display:grid; grid-template-columns: 0.85fr 1.15fr; gap:60px; align-items:center; }
+.about-photo{
+  aspect-ratio: 4/5; border-radius: var(--radius-lg); background: var(--gray-light);
+  border: 1px dashed var(--gray-mid-dark);
+  display:flex; align-items:center; justify-content:center; text-align:center; padding: 30px;
+  overflow:hidden; position:relative;
+}
+.about-photo img{ width:100%; height:100%; object-fit:cover; object-position: center top; border-radius: var(--radius-lg); }
+.about-photo .placeholder-tag{
+  background: var(--black); color: var(--yellow); font-size:12px; font-weight:800; padding:8px 14px;
+  border-radius:100px; text-transform:uppercase; margin-bottom:14px; display:inline-block;
+}
+.about-text p{ margin-bottom:18px; color: var(--gray-mid); font-size:16px; }
+@media (max-width: 900px){
+  .about-grid{ grid-template-columns: 1fr; gap:26px; }
+  .about-photo{ aspect-ratio: 4/5; }
+}
+
+.testimonials-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:22px; margin-top:56px; }
+.testimonial-card{ background: var(--white); border:1px solid var(--gray-line); border-radius: var(--radius-md); padding: 26px; }
+.testimonial-stars{ color: var(--yellow-dark); font-size:15px; margin-bottom:12px; }
+.testimonial-quote{ font-size:15px; color: var(--black); margin-bottom:18px; }
+.testimonial-author{ font-size:14px; font-weight:800; }
+.testimonial-level{ font-size:13px; color: var(--gray-mid); }
+.testimonial-tag{ font-size:11px; color: var(--gray-mid-dark); margin-top:14px; font-style:italic; }
+@media (max-width: 900px){ .testimonials-grid{ grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   FAQ
+   ========================================================================== */
+.faq-list{ max-width: 780px; margin: 0 auto; display:flex; flex-direction:column; gap:12px; }
+.faq-item{ border: 1px solid var(--gray-line); border-radius: var(--radius-md); overflow:hidden; background: var(--white); }
+.faq-question{
+  width:100%; display:flex; justify-content:space-between; align-items:center; gap:16px;
+  padding: 20px 24px; font-size:16px; font-weight:700; text-align:left;
+}
+.faq-question .icon{
+  width:26px; height:26px; border-radius:50%; background: var(--gray-light); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:800; transition: transform .25s ease;
+}
+.faq-item.is-open .faq-question .icon{ transform: rotate(45deg); background: var(--yellow); }
+.faq-answer{ max-height:0; overflow:hidden; transition: max-height .3s ease; }
+.faq-answer-inner{ padding: 0 24px 22px; color: var(--gray-mid); font-size:15px; }
+
+/* ==========================================================================
+   CONTACT
+   ========================================================================== */
+.contact-grid{ display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 50px; }
+.contact-actions{ display:flex; flex-direction:column; gap:14px; margin-bottom: 30px; }
+.contact-info-card{
+  background: var(--black-card); color:var(--white); border-radius: var(--radius-lg); padding: 28px; margin-top:10px;
+}
+.contact-info-card h4{ font-size:15px; font-weight:800; margin-bottom:6px; }
+.contact-info-card p{ color: rgba(255,255,255,0.6); font-size:14px; }
+
+.contact-form{ background: var(--white); border:1px solid var(--gray-line); border-radius: var(--radius-lg); padding: 34px; }
+.form-row{ display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px; }
+.form-field{ display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+.form-field label{ font-size:13px; font-weight:700; }
+.form-field input, .form-field select, .form-field textarea{
+  padding: 12px 14px; border-radius: var(--radius-sm); border: 1px solid var(--gray-line);
+  font-size: 14px; font-family: inherit; background: var(--gray-light);
+}
+.form-field textarea{ resize: vertical; min-height: 110px; }
+.form-success{
+  display:none; background:#eefadd; color:#3f6317; border-radius: var(--radius-sm); padding: 16px 18px;
+  font-size:14px; font-weight:600; margin-top:16px;
+}
+.form-success.is-visible{ display:block; }
+@media (max-width: 900px){ .contact-grid{ grid-template-columns: 1fr; } .form-row{ grid-template-columns:1fr; } }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer{ background: var(--black); color: rgba(255,255,255,0.6); padding: 60px 0 110px; }
+.footer-top{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:30px; padding-bottom:34px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.footer-brand strong{ color:var(--white); font-size:19px; font-weight:800; display:block; }
+.footer-brand span{ color: var(--yellow); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; }
+.footer-links{ display:flex; gap:50px; flex-wrap:wrap; }
+.footer-col h5{ color: var(--white); font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px; }
+.footer-col a, .footer-col button{ display:block; color: rgba(255,255,255,0.6); font-size:14px; margin-bottom:10px; text-align:left; }
+.footer-col a:hover, .footer-col button:hover{ color: var(--yellow); }
+.footer-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; padding-top:26px; font-size:13px; }
+
+/* Modale mentions légales / confidentialité */
+.modal-overlay{
+  position:fixed; inset:0; background: rgba(11,13,12,0.75); z-index: 2000;
+  display:none; align-items:center; justify-content:center; padding: 24px;
+}
+.modal-overlay.is-open{ display:flex; }
+.modal-box{
+  background: var(--white); border-radius: var(--radius-lg); padding: 34px; max-width: 460px; width:100%;
+  position:relative;
+}
+.modal-close{ position:absolute; top:16px; right:18px; font-size:20px; width:34px; height:34px; border-radius:50%; background: var(--gray-light); }
+.modal-box h3{ font-size:20px; font-weight:800; margin-bottom:14px; }
+.modal-box p{ color: var(--gray-mid); font-size:15px; }
+
+/* ==========================================================================
+   BARRE MOBILE FIXE
+   ========================================================================== */
+.mobile-bar{
+  display:none; position:fixed; bottom:0; left:0; right:0; z-index: 900;
+  background: var(--black); padding: 12px 16px; gap:10px;
+  box-shadow: 0 -8px 24px rgba(0,0,0,0.25);
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+.mobile-bar a{ flex:1; text-align:center; }
+@media (max-width: 900px){ .mobile-bar{ display:flex; } body{ padding-bottom: 78px; } }
+
+/* Accessibilité focus */
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible{
+  outline: 3px solid var(--yellow-dark); outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+  html{ scroll-behavior: auto; }
+}
+
+/* ===== Mobile — texte en premier, photo compacte en dessous ===== */
+@media (max-width: 900px){
+  .hero-photo{ aspect-ratio: 16/9; box-shadow: var(--shadow-soft); }
+  .hero-actions{ margin-top:26px; }
+}
+
+/* ==========================================================================
+   PLANNING HEBDOMADAIRE (PHOTO FIXE)
+   ========================================================================== */
+.weekly-photo{
+  border-radius: var(--radius-lg); background: var(--gray-light); border: 1px dashed var(--gray-mid-dark);
+  display:flex; align-items:center; justify-content:center; text-align:center; padding: 60px 30px;
+  min-height: 320px; overflow:hidden; position:relative;
+}
+.weekly-photo img{ width:100%; height:auto; display:block; border-radius:var(--radius-lg); }
+.weekly-photo.weekly-photo--filled{
+  padding:0; border:1px solid rgba(0,0,0,0.08); background:var(--black); box-shadow: var(--shadow-soft);
+}
+.weekly-photo .placeholder-tag{
+  background: var(--black); color: var(--yellow); font-size:12px; font-weight:800; padding:8px 14px;
+  border-radius:100px; text-transform:uppercase; margin-bottom:14px; display:inline-block;
+}
+.weekly-photo .placeholder-body{ color: var(--gray-mid); font-size:15px; max-width:420px; margin:0 auto; }
+.weekly-photo .placeholder-body strong{ display:block; color: var(--black); font-size:18px; margin-bottom:8px; }
+
+/* ==========================================================================
+   PAGE PLANNING COLLECTIFS — EN-TÊTE DE PAGE SECONDAIRE
+   ========================================================================== */
+.page-hero{
+  background: var(--black); color: var(--white); padding: 150px 0 60px; text-align:center;
+}
+.page-hero .eyebrow{ justify-content:center; }
+.page-hero h1{ font-size: clamp(30px, 4.5vw, 48px); font-weight:800; margin-top:10px; }
+.page-hero p{ color: rgba(255,255,255,0.65); max-width:560px; margin:16px auto 0; font-size:16px; }
+</style>
+</head>
+<body>
+
+<!-- ==========================================================================
+     NAVIGATION
+     ========================================================================== -->
+<header class="navbar">
+  <div class="container">
+    <a href="index.html#accueil" class="nav-brand">
+      <strong id="nav-brand-name">Benjamin Lespes</strong>
+      <span id="nav-brand-sub">Coach Padel Toulouse</span>
+    </a>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="index.html#accueil">Accueil</a>
+      <a href="index.html#individuel">Coaching individuel</a>
+      <a href="index.html#packs">Packs</a>
+      <a href="index.html#collectifs">Cours collectifs</a>
+      <a href="index.html#planning">Planning</a>
+      <a href="planning.html" style="color:#fff;">Réserver cours collectifs</a>
+      <a href="performance.html">Performance & santé</a>
+      <a href="index.html#apropos">À propos</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#" id="nav-book-btn" class="btn btn-primary desktop-only btn-sm">Réserver un cours</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="nav-mobile-panel" id="navMobilePanel">
+  <a href="index.html#accueil">Accueil</a>
+  <a href="index.html#individuel">Coaching individuel</a>
+  <a href="index.html#packs">Packs</a>
+  <a href="index.html#collectifs">Cours collectifs</a>
+  <a href="index.html#planning">Planning</a>
+  <a href="planning.html">Réserver cours collectifs</a>
+  <a href="performance.html">Performance & santé</a>
+  <a href="index.html#apropos">À propos</a>
+  <a href="index.html#contact">Contact</a>
+  <a href="#" id="nav-book-btn-mobile" class="btn btn-primary btn-block">Réserver un cours</a>
+</div>
+
+<!-- ==========================================================================
+     EN-TÊTE DE PAGE
+     ========================================================================== -->
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow">Cours collectifs</div>
+    <h1>Réserver un cours collectif</h1>
+    <p>Filtrez par jour, niveau, formule ou disponibilité pour trouver le groupe qui vous correspond, et réservez votre place directement.</p>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     REMPLISSAGE DES GROUPES
+     ========================================================================== -->
+<section class="section">
+  <div class="container">
+    <div class="planning-filters">
+      <div class="filter-group">
+        <label for="filterDay">Jour</label>
+        <select id="filterDay"><option value="">Tous les jours</option></select>
+      </div>
+      <div class="filter-group">
+        <label for="filterLevel">Niveau</label>
+        <select id="filterLevel"><option value="">Tous les niveaux</option></select>
+      </div>
+      <div class="filter-group">
+        <label for="filterFormule">Formule</label>
+        <select id="filterFormule"><option value="">Toutes les formules</option></select>
+      </div>
+      <div class="filter-group">
+        <label for="filterAvailability">Disponibilité</label>
+        <select id="filterAvailability">
+          <option value="">Toutes</option>
+          <option value="ok">Places disponibles</option>
+          <option value="warn">Presque complet</option>
+          <option value="full">Complet</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="planning-grid" id="planningGrid"></div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     FOOTER
+     ========================================================================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <strong>Benjamin Lespes</strong>
+        <span>Coach Padel Toulouse</span>
+        <p style="margin-top:12px; font-size:14px; max-width:280px;">Ace Padel Club de Colomiers</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5>Liens</h5>
+          <a href="#" id="footerBookLink">Réserver un cours</a>
+          <a href="#" id="footerInstagramLink">Instagram</a>
+          <a href="#" id="footerWhatsappLink">WhatsApp</a>
+        </div>
+        <div class="footer-col">
+          <h5>Informations</h5>
+          <button type="button" id="openLegalModal">Mentions légales</button>
+          <button type="button" id="openPrivacyModal">Politique de confidentialité</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="footerYear"></span> Benjamin Lespes — Coach Padel Toulouse</span>
+      <span>Site vitrine — Ace Padel Club, Colomiers</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Modales mentions légales / confidentialité -->
+<div class="modal-overlay" id="legalModal">
+  <div class="modal-box">
+    <button class="modal-close" data-close-modal>×</button>
+    <h3>Mentions légales</h3>
+    <p><strong>Éditeur du site</strong><br>
+    Benjamin Lespes — Coach de padel<br>
+    Statut : Entrepreneur individuel<br>
+    SIRET : 827 798 794 00018<br>
+    Adresse : Gradignan (33170)<br>
+    Téléphone : 06.79.09.65.74<br>
+    Activité : Cours de padel individuels et collectifs, à l'Ace Padel Club de Colomiers (Toulouse)</p>
+    <p><strong>Hébergement</strong><br>
+    Hébergeur : [à compléter selon la plateforme choisie]</p>
+    <p><strong>Propriété intellectuelle</strong><br>
+    L'ensemble des contenus de ce site (textes, photos, logo) est la propriété de Benjamin Lespes, sauf mention contraire. Toute reproduction sans autorisation est interdite.</p>
+  </div>
+</div>
+<div class="modal-overlay" id="privacyModal">
+  <div class="modal-box">
+    <button class="modal-close" data-close-modal>×</button>
+    <h3>Politique de confidentialité</h3>
+    <p>Contenu à compléter avant la mise en ligne.</p>
+  </div>
+</div>
+
+<!-- Barre mobile fixe -->
+<div class="mobile-bar">
+  <a href="#" id="mobileBarBookBtn" class="btn btn-primary btn-sm">Réserver</a>
+  <a href="#" id="mobileBarWhatsappBtn" class="btn btn-outline btn-sm" style="color:#fff; border-color:rgba(255,255,255,0.3);">WhatsApp</a>
+</div>
+
+<script>
+/* ==========================================================================
+   CONFIGURATION — ZONE À MODIFIER FACILEMENT
+   Toutes les informations principales du site sont centralisées ici.
+   ========================================================================== */
+const siteData = {
+
+  // ---- IDENTITÉ ----
+  brandName: "Benjamin Lespes",
+  brandSubtitle: "Coach Padel Toulouse",
+  mainHook: "Progressez avec une méthode claire, personnalisée et adaptée à votre niveau.",
+  locationLine: "Cours individuels et collectifs à l'Ace Padel Club de Colomiers.",
+  heroDescription: "Que vous découvriez le padel ou que vous prépariez vos prochains tournois, chaque séance est construite autour de vos objectifs, avec une méthode simple à comprendre et à appliquer sur le court.",
+  club: "Ace Padel Club, Colomiers (Toulouse)",
+
+  // ---- LIENS — ⚠️ À REMPLACER AVANT LA MISE EN LIGNE ⚠️ ----
+  // ⚠️⚠️⚠️ REMPLACER CES 3 LIENS PAR LES VRAIES URLS AVANT MISE EN LIGNE ⚠️⚠️⚠️
+  links: {
+    bookMyCoach: "https://bookmycoach.vercel.app/c/benjamin-lespes",
+    whatsapp: "https://wa.me/33679096574",
+    instagram: "https://www.instagram.com/pepes_24/"
+  },
+
+  // ---- TARIFS ----
+  pricing: {
+    soloSession: 45, // tarif du cours individuel (€ / heure)
+
+    discovery: {
+      enabled: true, // passer à false pour masquer l'offre découverte
+      title: "Séance découverte",
+      text: "Cette séance sert à définir votre niveau de jeu et à établir un plan de travail organisé en cycles.",
+      price: 35 // tarif de cette première séance (€)
+    },
+
+    packs: [
+      {
+        id: "evolution",
+        name: "Pack Évolution",
+        subtitle: "Pour démarrer une vraie progression",
+        sessions: 5,
+        durationWeeks: 5,
+        price: 225,
+        featured: false,
+        features: [
+          "5 séances individuelles",
+          "Programme sur environ 5 semaines",
+          "Entretien téléphonique de 20 minutes pour définir vos objectifs"
+        ],
+        bonus: [] // pas de bonus pour cette formule
+      },
+      {
+        id: "performance",
+        name: "Pack Performance",
+        subtitle: "Le format le plus suivi",
+        sessions: 10,
+        durationWeeks: 10,
+        price: 420,
+        featured: true,
+        features: [
+          "10 séances individuelles",
+          "Programme sur environ 10 semaines",
+          "Entretien téléphonique de 20 minutes",
+          "Suivi de progression personnalisé",
+          "Comptes rendus après chaque séance"
+        ],
+        bonus: ["2 Parties coachées"]
+      },
+      {
+        id: "competition",
+        name: "Pack Compétition",
+        subtitle: "Pour préparer vos échéances",
+        sessions: 20,
+        durationWeeks: 20,
+        price: 800,
+        featured: false,
+        features: [
+          "20 séances individuelles",
+          "Programme sur environ 20 semaines",
+          "Entretien téléphonique de 20 minutes",
+          "Suivi approfondi de progression",
+          "Comptes rendus après chaque séance"
+        ],
+        bonus: ["4 Parties coachées", "1 Tournoi coaché"]
+      }
+    ],
+
+    collectif: {
+      heuresCreuses: 250,
+      heuresPleines: 280,
+      sessionsPerCycle: 10,
+      sessionDuration: "1h30"
+    }
+  },
+
+  // ---- BÉNÉFICES ----
+  benefits: [
+    { icon: "🎯", title: "Objectifs définis", text: "Chaque cycle démarre par la définition claire de vos objectifs de progression." },
+    { icon: "📈", title: "Séances adaptées", text: "Un contenu ajusté à votre niveau réel, pas à une méthode standardisée." },
+    { icon: "📊", title: "Suivi de progression", text: "Un point régulier sur votre évolution, séance après séance." }
+  ],
+
+  // ---- À PROPOS ----
+  aboutText1: "Je suis passionné par le padel et par la transmission. Mon objectif est de proposer un accompagnement structuré et adapté à chaque joueur, en m'appuyant sur ce que j'ai appris auprès de nombreuses références du padel et sur une formation continue.",
+  aboutText2: "Le padel est un sport convivial, fédérateur et tactiquement très riche. Chaque séance doit permettre au joueur de mieux comprendre son jeu, d'identifier ses axes de progression et de repartir avec des solutions concrètes.",
+
+  // ---- TÉMOIGNAGES (contenus temporaires à remplacer) ----
+  testimonials: [
+    { name: "Julie", level: "P100", stars: 5, quote: "Des séances très claires, j'ai enfin compris ce qui me manquait en match." },
+    { name: "Marc", level: "P250", stars: 5, quote: "Un vrai travail tactique, très utile avant mes tournois." },
+    { name: "Sarah", level: "Débutante", stars: 5, quote: "Parfait pour débuter, Benjamin explique très bien chaque geste." }
+  ],
+
+  // ---- FAQ ----
+  faq: [
+    { q: "Où ont lieu les cours ?", a: "L'ensemble des cours se déroulent à l'Ace Padel Club de Colomiers, à quelques minutes de Toulouse." },
+    { q: "Quel niveau faut-il avoir ?", a: "Tous les niveaux sont acceptés, du débutant complet aux joueurs de compétition évoluant jusqu'en P250." },
+    { q: "Puis-je réserver un cours si je débute ?", a: "Oui, les cours individuels et certains groupes collectifs sont ouverts aux débutants." },
+    { q: "Comment rejoindre un cours collectif ?", a: "Rendez-vous sur la page \"Réserver cours collectifs\", choisissez un groupe disponible et cliquez sur \"Réserver ma place\"." },
+    { q: "Le terrain est-il compris dans le tarif ?", a: "Les modalités de location du terrain sont précisées lors de la prise de contact, selon la formule choisie." },
+    { q: "Que se passe-t-il si un groupe est complet ?", a: "Vous pouvez demander à être informé dès qu'une place se libère dans ce groupe." },
+    { q: "Puis-je offrir un cours ou un pack ?", a: "Oui, contactez-moi directement par WhatsApp ou via le formulaire pour organiser un cadeau personnalisé." }
+  ],
+
+  // ---- PLANNING DES COURS COLLECTIFS (démonstration) ----
+  planning: [
+    { day: "Lundi",  time: "12h00 – 13h30", level: "P100",  groupName: "Team Contre-Pied", formule: "Heures pleines", maxPlaces: 4, registered: 2 },
+    { day: "Mardi",  time: "18h00 – 19h30", level: "P25",   groupName: "Groupe Envol",     formule: "Heures pleines", maxPlaces: 4, registered: 2 },
+    { day: "Mardi",  time: "19h30 – 21h00", level: "P50",   groupName: "Team Konnect",     formule: "Heures pleines", maxPlaces: 4, registered: 4 },
+    { day: "Mardi",  time: "21h00 – 22h30", level: "P100+", groupName: "Escouade Bandeja", formule: "Heures creuses", maxPlaces: 4, registered: 3 },
+    { day: "Jeudi",  time: "18h00 – 19h30", level: "P100",  groupName: "Team Break",       formule: "Heures pleines", maxPlaces: 4, registered: 1 },
+    { day: "Jeudi",  time: "19h30 – 21h00", level: "P250",  groupName: "Groupe Élite",     formule: "Heures pleines", maxPlaces: 4, registered: 2 },
+    { day: "Jeudi",  time: "21h00 – 22h30", level: "P250",  groupName: "Team Compét",      formule: "Heures creuses", maxPlaces: 4, registered: 3 },
+    { day: "Samedi", time: "9h00 – 10h30",  level: "P50",   groupName: "Groupe Matinal",   formule: "Heures creuses", maxPlaces: 4, registered: 2 }
+  ]
+};
+
+/* ==========================================================================
+   JAVASCRIPT — RENDU DU CONTENU + INTERACTIONS
+   ========================================================================== */
+(function(){
+  "use strict";
+
+  /* ---- Utilitaires ---- */
+  function euro(n){ return n.toLocaleString("fr-FR") + " €"; }
+  function el(html){ const d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstElementChild; }
+  function setText(id, text){ const n = document.getElementById(id); if(n) n.textContent = text; }
+  function setHTML(id, html){ const n = document.getElementById(id); if(n) n.innerHTML = html; }
+  function setHref(id, href){ const n = document.getElementById(id); if(n) n.href = href; }
+
+  /* ---- Identité / textes principaux ---- */
+  setText("nav-brand-name", siteData.brandName);
+  setText("nav-brand-sub", siteData.brandSubtitle);
+  setHTML("hero-name", siteData.brandName);
+  setText("hero-subtitle", siteData.brandSubtitle);
+  setText("hero-hook", siteData.mainHook);
+  setText("hero-desc", siteData.heroDescription);
+  setText("hero-location", siteData.locationLine);
+  setText("contactLocation", siteData.locationLine + " (" + siteData.club + ")");
+  setText("aboutText1", siteData.aboutText1);
+  setText("aboutText2", siteData.aboutText2);
+
+  /* ---- Liens (BookMyCoach / WhatsApp / Instagram) ---- */
+  const bookLinks = ["nav-book-btn", "nav-book-btn-mobile", "hero-book-btn", "soloBookBtn", "contactBookBtn", "footerBookLink", "mobileBarBookBtn"];
+  bookLinks.forEach(id => setHref(id, siteData.links.bookMyCoach));
+
+  function whatsappBaseLink(message){
+    if(siteData.links.whatsapp === "#") return "#";
+    const sep = siteData.links.whatsapp.includes("?") ? "&" : "?";
+    return siteData.links.whatsapp + sep + "text=" + encodeURIComponent(message);
+  }
+  setHref("contactWhatsappBtn", whatsappBaseLink("Bonjour, je souhaite avoir plus d'informations sur vos cours."));
+  setHref("footerWhatsappLink", siteData.links.whatsapp);
+  setHref("mobileBarWhatsappBtn", whatsappBaseLink("Bonjour, je souhaite avoir plus d'informations sur vos cours."));
+  setHref("contactInstagramBtn", siteData.links.instagram);
+  setHref("footerInstagramLink", siteData.links.instagram);
+
+
+  /* ---- Offre découverte ---- */
+  const discoveryBox = document.getElementById("discoveryBox");
+  if(discoveryBox){
+    if(siteData.pricing.discovery.enabled){
+      setText("discoveryTitle", siteData.pricing.discovery.title);
+      setText("discoveryText", siteData.pricing.discovery.text);
+      setText("discoveryPrice", euro(siteData.pricing.discovery.price) + " la première séance");
+    } else {
+      discoveryBox.style.display = "none";
+    }
+  }
+
+  /* ---- Tarif cours individuel ---- */
+  setText("soloPrice", euro(siteData.pricing.soloSession));
+
+  /* ---- Bénéfices ---- */
+  const benefitsGrid = document.getElementById("benefitsGrid");
+  if(benefitsGrid){
+    siteData.benefits.forEach(b => {
+      benefitsGrid.appendChild(el(`
+        <div class="benefit-card">
+          <div class="benefit-icon">${b.icon}</div>
+          <h3>${b.title}</h3>
+          <p>${b.text}</p>
+        </div>
+      `));
+    });
+  }
+
+  /* ---- Packs ---- */
+  const packsGrid = document.getElementById("packsGrid");
+  if(packsGrid){
+    siteData.pricing.packs.forEach(pack => {
+      const soloEquivalent = pack.sessions * siteData.pricing.soloSession;
+      const savings = soloEquivalent - pack.price;
+      const bonusHtml = pack.bonus.length ? `
+        <div class="pack-bonus">
+          <div class="bonus-tag">Bonus inclus</div>
+          <ul>${pack.bonus.map(b => `<li>${b}</li>`).join("")}</ul>
+        </div>` : "";
+      const saveHtml = savings > 0 ? `<div class="pack-save">💰 ${euro(savings)} d'économie vs séances à l'unité</div>` : "";
+
+      packsGrid.appendChild(el(`
+        <div class="pack-card ${pack.featured ? "is-featured" : ""}">
+          ${pack.featured ? '<span class="pack-badge">Le plus choisi</span>' : ""}
+          <div class="pack-name">${pack.name}</div>
+          <div class="pack-sub">${pack.subtitle}</div>
+          <div class="pack-price"><span class="amount">${euro(pack.price)}</span><span class="unit">/ ${pack.sessions} séances</span></div>
+          ${saveHtml}
+          <ul class="pack-list">${pack.features.map(f => `<li>${f}</li>`).join("")}</ul>
+          ${bonusHtml}
+          <a href="${siteData.links.bookMyCoach}" class="btn ${pack.featured ? "btn-primary" : "btn-outline"} btn-block">Réserver ce pack</a>
+        </div>
+      `));
+    });
+  }
+
+  /* ---- Cours collectifs — tarifs ---- */
+  setText("priceCreuses", euro(siteData.pricing.collectif.heuresCreuses));
+  setText("pricePleines", euro(siteData.pricing.collectif.heuresPleines));
+
+  /* ---- Témoignages ---- */
+  const testimonialsGrid = document.getElementById("testimonialsGrid");
+  if(testimonialsGrid){
+    siteData.testimonials.forEach(t => {
+      testimonialsGrid.appendChild(el(`
+        <div class="testimonial-card">
+          <div class="testimonial-stars">${"★".repeat(t.stars)}${"☆".repeat(5 - t.stars)}</div>
+          <p class="testimonial-quote">"${t.quote}"</p>
+          <div class="testimonial-author">${t.name}</div>
+          <div class="testimonial-level">Niveau ${t.level}</div>
+          <div class="testimonial-tag">Témoignage temporaire, à remplacer par un avis réel</div>
+      </div>
+    `));
+    });
+  }
+
+  /* ---- FAQ (accordéon) ---- */
+  const faqList = document.getElementById("faqList");
+  if(faqList){
+  siteData.faq.forEach((item, i) => {
+    const faqItem = el(`
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>${item.q}</span>
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">${item.a}</div>
+        </div>
+      </div>
+    `);
+    const question = faqItem.querySelector(".faq-question");
+    const answer = faqItem.querySelector(".faq-answer");
+    question.addEventListener("click", () => {
+      const isOpen = faqItem.classList.contains("is-open");
+      faqList.querySelectorAll(".faq-item").forEach(otherItem => {
+        otherItem.classList.remove("is-open");
+        otherItem.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+        otherItem.querySelector(".faq-answer").style.maxHeight = null;
+      });
+      if(!isOpen){
+        faqItem.classList.add("is-open");
+        question.setAttribute("aria-expanded", "true");
+        answer.style.maxHeight = answer.scrollHeight + "px";
+      }
+    });
+    faqList.appendChild(faqItem);
+  });
+  }
+
+  /* ---- Planning : rendu, jauges, statuts, filtres, WhatsApp ---- */
+  const planningGrid = document.getElementById("planningGrid");
+  const filterDay = document.getElementById("filterDay");
+  const filterLevel = document.getElementById("filterLevel");
+  const filterFormule = document.getElementById("filterFormule");
+  const filterAvailability = document.getElementById("filterAvailability");
+
+  function uniqueValues(key){
+    return [...new Set(siteData.planning.map(s => s[key]))];
+  }
+  if(filterDay && filterLevel && filterFormule){
+    uniqueValues("day").forEach(v => filterDay.appendChild(el(`<option value="${v}">${v}</option>`)));
+    uniqueValues("level").forEach(v => filterLevel.appendChild(el(`<option value="${v}">${v}</option>`)));
+    uniqueValues("formule").forEach(v => filterFormule.appendChild(el(`<option value="${v}">${v}</option>`)));
+  }
+
+  function computeStatus(remaining){
+    if(remaining <= 0) return { key: "full", label: "Complet", gaugeClass: "level-full" };
+    if(remaining === 1) return { key: "warn", label: "Presque complet", gaugeClass: "level-warn" };
+    return { key: "ok", label: "Places disponibles", gaugeClass: "level-ok" };
+  }
+
+  function contactLink(){
+    return /planning\.html$/.test(location.pathname) ? "index.html#contact" : "#contact";
+  }
+
+  function renderPlanning(){
+    planningGrid.innerHTML = "";
+    const dayVal = filterDay.value, levelVal = filterLevel.value, formuleVal = filterFormule.value, availVal = filterAvailability.value;
+
+    const filtered = siteData.planning.filter(slot => {
+      const remaining = slot.maxPlaces - slot.registered;
+      const status = computeStatus(remaining);
+      if(dayVal && slot.day !== dayVal) return false;
+      if(levelVal && slot.level !== levelVal) return false;
+      if(formuleVal && slot.formule !== formuleVal) return false;
+      if(availVal && status.key !== availVal) return false;
+      return true;
+    });
+
+    if(filtered.length === 0){
+      planningGrid.appendChild(el(`<div class="no-results">Aucun groupe ne correspond à ces filtres pour le moment.</div>`));
+      return;
+    }
+
+    filtered.forEach(slot => {
+      const remaining = slot.maxPlaces - slot.registered;
+      const status = computeStatus(remaining);
+      const fillPercent = Math.max(0, Math.min(100, (slot.registered / slot.maxPlaces) * 100));
+      const isFull = status.key === "full";
+      const buttonLink = isFull ? contactLink() : siteData.links.bookMyCoach;
+      const buttonLabel = isFull ? "Être informé d'une place" : "Réserver ma place";
+
+      planningGrid.appendChild(el(`
+        <div class="slot-card">
+          <div class="slot-top">
+            <div>
+              <div class="slot-day">${slot.day}</div>
+              <div class="slot-time">${slot.time}</div>
+            </div>
+            <span class="slot-level">${slot.level}</span>
+          </div>
+          <div class="slot-name">${slot.groupName}</div>
+          <span class="slot-formule">${slot.formule}</span>
+          <div class="gauge-row">
+            <div class="gauge-track"><div class="gauge-fill ${status.gaugeClass}" style="width:${fillPercent}%"></div></div>
+            <span class="gauge-label">${slot.registered}/${slot.maxPlaces}</span>
+          </div>
+          <div class="slot-status status-${status.key}">${status.label} ${status.key !== "full" ? "· " + remaining + " place" + (remaining > 1 ? "s" : "") : ""}</div>
+          <a href="${buttonLink}" class="btn ${status.key === "full" ? "btn-outline" : "btn-primary"} btn-block btn-sm">${buttonLabel}</a>
+        </div>
+      `));
+    });
+  }
+
+  if(planningGrid && filterDay && filterLevel && filterFormule && filterAvailability){
+    [filterDay, filterLevel, filterFormule, filterAvailability].forEach(f => f.addEventListener("change", renderPlanning));
+    renderPlanning();
+  }
+
+  /* ---- Navigation mobile ---- */
+  const navToggle = document.getElementById("navToggle");
+  const navMobilePanel = document.getElementById("navMobilePanel");
+  if(navToggle && navMobilePanel){
+    navToggle.addEventListener("click", () => {
+      const isOpen = navMobilePanel.classList.toggle("is-open");
+      navToggle.classList.toggle("is-open", isOpen);
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+    document.querySelectorAll(".nav-mobile-panel a").forEach(link => {
+      link.addEventListener("click", () => {
+        navMobilePanel.classList.remove("is-open");
+        navToggle.classList.remove("is-open");
+        navToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  /* ---- Formulaire de contact (démonstration, pas d'envoi réel) ---- */
+  const contactForm = document.getElementById("contactForm");
+  const formSuccess = document.getElementById("formSuccess");
+  if(contactForm && formSuccess){
+    contactForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      formSuccess.classList.add("is-visible");
+      contactForm.reset();
+      formSuccess.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }
+
+  /* ---- Modales mentions légales / confidentialité ---- */
+  function openModal(modal){ modal.classList.add("is-open"); }
+  function closeModal(modal){ modal.classList.remove("is-open"); }
+  const legalModal = document.getElementById("legalModal");
+  const privacyModal = document.getElementById("privacyModal");
+  const openLegalModal = document.getElementById("openLegalModal");
+  const openPrivacyModal = document.getElementById("openPrivacyModal");
+  if(legalModal && privacyModal && openLegalModal && openPrivacyModal){
+    openLegalModal.addEventListener("click", () => openModal(legalModal));
+    openPrivacyModal.addEventListener("click", () => openModal(privacyModal));
+    document.querySelectorAll("[data-close-modal]").forEach(btn => {
+      btn.addEventListener("click", () => { closeModal(legalModal); closeModal(privacyModal); });
+    });
+    [legalModal, privacyModal].forEach(modal => {
+      modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(modal); });
+    });
+  }
+
+  /* ---- Année automatique ---- */
+  setText("footerYear", new Date().getFullYear());
+
+})();
+
+</script>
+</body>
+</html>
