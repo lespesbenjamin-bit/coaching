@@ -824,87 +824,6 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 </section>
 
 <!-- ==========================================================================
-     PLANNING HEBDOMADAIRE
-     ========================================================================== -->
-<section class="section section--tint">
-  <div class="container">
-    <div class="section-head" style="text-align:center; margin-left:auto; margin-right:auto;">
-      <div class="eyebrow" style="justify-content:center;">Planning type</div>
-      <h2 class="section-title">Le planning hebdomadaire des cours collectifs à Toulouse</h2>
-      <p class="section-sub">Trois créneaux par jour, du niveau intermédiaire au niveau compétition.</p>
-    </div>
-
-    <div class="stage-days-grid" style="grid-template-columns: repeat(3, 1fr); margin-top:36px;">
-      <div>
-        <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Samedi</h3>
-        <div class="slot-card" style="border-left:4px solid #4caf50; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">9h00 – 10h30</div><div class="slot-time">Niveau 3/4</div></div>
-            <span class="slot-level">P25</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #2f6fed; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">10h30 – 12h00</div><div class="slot-time">Niveau 4+/5</div></div>
-            <span class="slot-level">P50</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #ff8a3d;">
-          <div class="slot-top">
-            <div><div class="slot-day">12h00 – 13h30</div><div class="slot-time">Niveau 6+</div></div>
-            <span class="slot-level">P100</span>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Mardi</h3>
-        <div class="slot-card" style="border-left:4px solid #4caf50; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">18h00 – 19h30</div><div class="slot-time">Niveau 4/4+</div></div>
-            <span class="slot-level">P25</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #ff8a3d; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">19h30 – 21h00</div><div class="slot-time">Niveau 6+</div></div>
-            <span class="slot-level">P100</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #ff8a3d;">
-          <div class="slot-top">
-            <div><div class="slot-day">21h00 – 22h30</div><div class="slot-time">Niveau 6+</div></div>
-            <span class="slot-level">P100</span>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Jeudi</h3>
-        <div class="slot-card" style="border-left:4px solid #2f6fed; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">18h00 – 19h30</div><div class="slot-time">Niveau 4+/5</div></div>
-            <span class="slot-level">P50</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #ff8a3d; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">19h30 – 21h00</div><div class="slot-time">Niveau avancé</div></div>
-            <span class="slot-level">P100</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #e0453f;">
-          <div class="slot-top">
-            <div><div class="slot-day">21h00 – 22h30</div><div class="slot-time">Niveau compétition</div></div>
-            <span class="slot-level">P250</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ==========================================================================
      CALENDRIER — SEPTEMBRE
      ========================================================================== -->
 <section class="section">
@@ -1032,12 +951,94 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
           + '<div class="info"><div class="time">' + s.time + '</div><div class="level">' + s.level + '</div></div>'
           + '</div>';
       });
-      html += '<a href="index.html#contact" class="btn btn-primary">Me contacter pour réserver</a>';
+      html += '<a href="#" id="calendarReserveBtn" class="btn btn-primary">Réserver ce créneau sur WhatsApp</a>';
       detail.innerHTML = html;
+      if(typeof window.wirePlanningWhatsappBtn === "function"){ window.wirePlanningWhatsappBtn(data.label); }
     });
   });
 })();
 </script>
+
+<!-- ==========================================================================
+     PLANNING HEBDOMADAIRE
+     ========================================================================== -->
+<section class="section section--tint">
+  <div class="container">
+    <div class="section-head" style="text-align:center; margin-left:auto; margin-right:auto;">
+      <div class="eyebrow" style="justify-content:center;">Planning type</div>
+      <h2 class="section-title">Le planning hebdomadaire des cours collectifs à Toulouse</h2>
+      <p class="section-sub">Trois créneaux par jour, du niveau intermédiaire au niveau compétition.</p>
+    </div>
+
+    <div class="stage-days-grid" style="grid-template-columns: repeat(3, 1fr); margin-top:36px;">
+      <div>
+        <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Samedi</h3>
+        <div class="slot-card" style="border-left:4px solid #4caf50; margin-bottom:14px;">
+          <div class="slot-top">
+            <div><div class="slot-day">9h00 – 10h30</div><div class="slot-time">Niveau 3/4</div></div>
+            <span class="slot-level">P25</span>
+          </div>
+        </div>
+        <div class="slot-card" style="border-left:4px solid #2f6fed; margin-bottom:14px;">
+          <div class="slot-top">
+            <div><div class="slot-day">10h30 – 12h00</div><div class="slot-time">Niveau 4+/5</div></div>
+            <span class="slot-level">P50</span>
+          </div>
+        </div>
+        <div class="slot-card" style="border-left:4px solid #ff8a3d;">
+          <div class="slot-top">
+            <div><div class="slot-day">12h00 – 13h30</div><div class="slot-time">Niveau 6+</div></div>
+            <span class="slot-level">P100</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Mardi</h3>
+        <div class="slot-card" style="border-left:4px solid #4caf50; margin-bottom:14px;">
+          <div class="slot-top">
+            <div><div class="slot-day">18h00 – 19h30</div><div class="slot-time">Niveau 4/4+</div></div>
+            <span class="slot-level">P25</span>
+          </div>
+        </div>
+        <div class="slot-card" style="border-left:4px solid #ff8a3d; margin-bottom:14px;">
+          <div class="slot-top">
+            <div><div class="slot-day">19h30 – 21h00</div><div class="slot-time">Niveau 6+</div></div>
+            <span class="slot-level">P100</span>
+          </div>
+        </div>
+        <div class="slot-card" style="border-left:4px solid #ff8a3d;">
+          <div class="slot-top">
+            <div><div class="slot-day">21h00 – 22h30</div><div class="slot-time">Niveau 6+</div></div>
+            <span class="slot-level">P100</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Jeudi</h3>
+        <div class="slot-card" style="border-left:4px solid #2f6fed; margin-bottom:14px;">
+          <div class="slot-top">
+            <div><div class="slot-day">18h00 – 19h30</div><div class="slot-time">Niveau 4+/5</div></div>
+            <span class="slot-level">P50</span>
+          </div>
+        </div>
+        <div class="slot-card" style="border-left:4px solid #ff8a3d; margin-bottom:14px;">
+          <div class="slot-top">
+            <div><div class="slot-day">19h30 – 21h00</div><div class="slot-time">Niveau avancé</div></div>
+            <span class="slot-level">P100</span>
+          </div>
+        </div>
+        <div class="slot-card" style="border-left:4px solid #e0453f;">
+          <div class="slot-top">
+            <div><div class="slot-day">21h00 – 22h30</div><div class="slot-time">Niveau compétition</div></div>
+            <span class="slot-level">P250</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ==========================================================================
      FOOTER
@@ -1158,6 +1159,11 @@ const siteData = {
   setHref("contactWhatsappBtn", whatsappBaseLink("Bonjour, je souhaite avoir plus d'informations sur vos cours."));
   setHref("footerWhatsappLink", siteData.links.whatsapp);
   setHref("mobileBarWhatsappBtn", whatsappBaseLink("Bonjour, je souhaite avoir plus d'informations sur vos cours."));
+
+  /* ---- Bouton WhatsApp du calendrier (planning collectifs) ---- */
+  window.wirePlanningWhatsappBtn = function(dateLabel){
+    setHref("calendarReserveBtn", whatsappBaseLink("Bonjour, je souhaite réserver un créneau du " + dateLabel + "."));
+  };
   setHref("contactInstagramBtn", siteData.links.instagram);
   setHref("footerInstagramLink", siteData.links.instagram);
 
