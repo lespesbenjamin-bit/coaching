@@ -194,6 +194,11 @@ p{ margin:0; }
 }
 .hero-kicker .dot{ width:7px; height:7px; border-radius:50%; background: var(--yellow); box-shadow: 0 0 0 4px rgba(217,255,63,0.2); }
 .hero h1{ font-size: clamp(38px, 5.4vw, 68px); font-weight:800; }
+.hero-rank{
+  display:inline-flex; align-items:center; gap:8px; margin-top:16px; padding: 8px 16px;
+  background: rgba(217,255,63,0.12); border: 1px solid rgba(217,255,63,0.4); border-radius:100px;
+  color: var(--yellow); font-size:14px; font-weight:700; letter-spacing:0.01em;
+}
 .hero h1 em{ font-style:normal; color: var(--yellow); }
 .hero .tagline{ font-size: clamp(18px, 2vw, 22px); font-weight:600; margin-top:18px; color: rgba(255,255,255,0.9); }
 .hero p.desc{ margin-top:20px; color: rgba(255,255,255,0.65); font-size:16px; max-width:520px; }
@@ -892,6 +897,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
     <div>
       <div class="hero-kicker"><span class="dot"></span> Ace Padel Club · Colomiers</div>
       <h1 id="hero-name">Benjamin Lespes</h1>
+      <div class="hero-rank">🎾 Classé 420<sup>ème</sup> joueur français</div>
       <p class="tagline" id="hero-subtitle">Coach Padel Toulouse</p>
       <p class="tagline" id="hero-hook" style="font-weight:600; color:#fff;"></p>
       <p class="desc" id="hero-desc"></p>
@@ -908,7 +914,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
   </div>
 </section>
 
-<!-- ==========================================================================
+
      COACHING INDIVIDUEL
      ========================================================================== -->
 <section class="section section--tint" id="individuel">
@@ -987,7 +993,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
     </div>
     <p class="formule-note">Les créneaux et tarifs varient selon les heures d'affluence du club.</p>
     <div style="text-align:center; margin-top:28px;">
-      <a href="planning-collectifs.html" class="btn btn-primary">Voir le planning des cours collectifs</a>
+      <a href="planning.html" class="btn btn-primary">Voir nos stages du moment</a>
     </div>
   </div>
 </section>
@@ -1277,7 +1283,7 @@ const siteData = {
   },
 
   // ---- À PROPOS ----
-  aboutText1: "Je suis passionné par le padel et par la transmission. Mon objectif est de proposer un accompagnement structuré et adapté à chaque joueur, en m'appuyant sur ce que j'ai appris auprès de nombreuses références du padel et sur une formation continue.",
+  aboutText1: "Je suis passionné par le padel et par la transmission. Classé 420ème joueur français, je participe régulièrement à des tournois P500 et P1000, une pratique de haut niveau qui nourrit directement ma méthode de coaching. Mon objectif est de proposer un accompagnement structuré et adapté à chaque joueur, en m'appuyant sur ce que j'ai appris auprès de nombreuses références du padel et sur une formation continue.",
   aboutText2: "Le padel est un sport convivial, fédérateur et tactiquement très riche. Chaque séance doit permettre au joueur de mieux comprendre son jeu, d'identifier ses axes de progression et de repartir avec des solutions concrètes. J'accompagne des joueurs de tous niveaux à Toulouse, Colomiers et plus largement en Haute-Garonne et en Occitanie, du premier cours de découverte jusqu'à la préparation de tournois.",
 
   // ---- TÉMOIGNAGES (contenus temporaires à remplacer) ----

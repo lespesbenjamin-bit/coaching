@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cours Collectif Padel Toulouse — Planning & Tarifs | Benjamin Lespes</title>
-<meta name="description" content="Cours collectif de padel à Toulouse et Colomiers : groupes de 4 joueurs max, par niveau (P25 à P250), planning hebdomadaire et calendrier des prochaines sessions. Réservez votre créneau.">
+<title>Planning des Cours Collectifs — Padel Toulouse & Colomiers | Benjamin Lespes</title>
+<meta name="description" content="Planning mensuel des cours collectifs de padel à Toulouse et Colomiers, par niveau et par groupe. Bientôt disponible.">
 <link rel="canonical" href="https://coachpadeltoulouse.fr/planning-collectifs.html">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, follow">
 <meta name="author" content="Benjamin Lespes">
 <meta name="theme-color" content="#0b0d0c">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -18,14 +18,14 @@
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://coachpadeltoulouse.fr/planning-collectifs.html">
-<meta property="og:title" content="Cours collectif padel Toulouse — Benjamin Lespes, Coach Padel">
-<meta property="og:description" content="Cours collectifs de padel par niveau à Toulouse et Colomiers : planning hebdomadaire, calendrier des prochaines sessions et réservation en ligne.">
+<meta property="og:title" content="Planning des cours collectifs — Benjamin Lespes, Coach Padel Toulouse">
+<meta property="og:description" content="Planning mensuel des cours collectifs de padel, par niveau et par groupe, à Toulouse et Colomiers.">
 <meta property="og:image" content="https://coachpadeltoulouse.fr/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cours collectif padel Toulouse — Benjamin Lespes">
-<meta name="twitter:description" content="Cours collectifs de padel par niveau à Toulouse et Colomiers : planning hebdomadaire, calendrier des prochaines sessions et réservation en ligne.">
+<meta name="twitter:title" content="Planning des cours collectifs — Benjamin Lespes">
+<meta name="twitter:description" content="Planning mensuel des cours collectifs de padel, par niveau et par groupe, à Toulouse et Colomiers.">
 <meta name="twitter:image" content="https://coachpadeltoulouse.fr/og-image.jpg">
 <style>
 /* ==========================================================================
@@ -440,56 +440,6 @@ p{ margin:0; }
 
 @media (max-width: 800px){ .planning-grid{ grid-template-columns: 1fr; } }
 
-/* ==========================================================================
-   CALENDRIER
-   ========================================================================== */
-.calendar-wrap{ display:grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items:start; }
-@media (max-width: 900px){ .calendar-wrap{ grid-template-columns: 1fr; } }
-
-.calendar-card{
-  background: var(--white); border:1px solid var(--gray-line); border-radius: var(--radius-lg);
-  padding: 28px; box-shadow: var(--shadow-soft);
-}
-.calendar-head{ display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
-.calendar-head h3{ font-size:19px; font-weight:800; text-transform:capitalize; }
-.calendar-weekdays{ display:grid; grid-template-columns: repeat(7, 1fr); gap:4px; margin-bottom:6px; }
-.calendar-weekdays span{ text-align:center; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color: var(--gray-mid); padding-bottom:6px; }
-.calendar-grid{ display:grid; grid-template-columns: repeat(7, 1fr); gap:4px; }
-.cal-day{
-  aspect-ratio: 1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  border-radius: 12px; font-size:14px; font-weight:700; color: var(--black); position:relative;
-}
-.cal-day.is-empty{ visibility:hidden; }
-.cal-day.is-open{
-  background: var(--gray-light); cursor:pointer; border: 1.5px solid transparent;
-  transition: transform .15s ease, border-color .15s ease, background .15s ease;
-}
-.cal-day.is-open:hover{ transform: translateY(-2px); background: var(--white); border-color: var(--black); }
-.cal-day.is-open.is-active{ background: var(--black); color: var(--white); border-color: var(--black); }
-.cal-dots{ display:flex; gap:3px; margin-top:4px; }
-.cal-dots span{ width:6px; height:6px; border-radius:50%; display:inline-block; }
-
-.calendar-legend{ display:flex; flex-wrap:wrap; gap:14px; margin-top:22px; padding-top:20px; border-top:1px solid var(--gray-line); }
-.legend-item{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; color: var(--gray-mid); }
-.legend-dot{ width:10px; height:10px; border-radius:50%; display:inline-block; flex-shrink:0; }
-
-.calendar-detail{
-  background: var(--black); color: var(--white); border-radius: var(--radius-lg);
-  padding: 28px; min-height: 260px; display:flex; flex-direction:column;
-}
-.calendar-detail .detail-date{ font-size:20px; font-weight:800; margin-bottom:18px; }
-.calendar-detail .detail-empty{ margin: auto; text-align:center; color: rgba(255,255,255,0.5); font-size:14px; max-width:220px; }
-.detail-session{
-  display:flex; align-items:center; gap:12px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.12);
-}
-.detail-session:last-of-type{ border-bottom:none; }
-.detail-session .dot{ width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-.detail-session .info{ flex-grow:1; }
-.detail-session .time{ font-weight:800; font-size:15px; }
-.detail-session .level{ font-size:13px; color: rgba(255,255,255,0.6); margin-top:2px; }
-.calendar-detail .btn-primary{ margin-top:20px; }
-
-
 
 /* ==========================================================================
    À PROPOS
@@ -818,224 +768,23 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 <section class="page-hero">
   <div class="container">
     <div class="eyebrow">Cours collectifs</div>
-    <h1>Cours collectif padel Toulouse : planning et prochaines sessions</h1>
-    <p>Le cours collectif de padel à Toulouse et Colomiers, c'est un groupe de 4 joueurs maximum, constitué par niveau (P25 à P250), pour progresser sur un cycle complet avec Benjamin Lespes. Retrouvez ci-dessous le planning hebdomadaire type et le calendrier des prochaines sessions disponibles.</p>
+    <h1>Planning des cours collectifs</h1>
+    <p>Retrouvez ici le planning mensuel des cours collectifs, groupe par groupe.</p>
   </div>
 </section>
 
 <!-- ==========================================================================
-     CALENDRIER — SEPTEMBRE
-     ========================================================================== -->
-<section class="section">
-  <div class="container">
-    <div class="section-head" style="text-align:center; margin-left:auto; margin-right:auto;">
-      <div class="eyebrow" style="justify-content:center;">Septembre</div>
-      <h2 class="section-title">Prochains cours collectifs disponibles</h2>
-      <p class="section-sub">Cliquez sur une date en couleur pour voir les créneaux et niveaux ouverts ce jour-là.</p>
-    </div>
-
-    <div class="calendar-wrap" style="margin-top:36px;">
-      <div class="calendar-card">
-        <div class="calendar-head"><h3>Septembre 2026</h3></div>
-        <div class="calendar-weekdays">
-          <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
-        </div>
-        <div class="calendar-grid" id="calendarGrid">
-          <div class="cal-day is-empty"></div>
-          <div class="cal-day" data-date="1">1</div>
-          <div class="cal-day" data-date="2">2</div>
-          <div class="cal-day" data-date="3">3</div>
-          <div class="cal-day" data-date="4">4</div>
-          <div class="cal-day is-open" data-date="5">5</div>
-          <div class="cal-day" data-date="6">6</div>
-          <div class="cal-day" data-date="7">7</div>
-          <div class="cal-day" data-date="8">8</div>
-          <div class="cal-day" data-date="9">9</div>
-          <div class="cal-day is-open" data-date="10">10</div>
-          <div class="cal-day" data-date="11">11</div>
-          <div class="cal-day is-open" data-date="12">12</div>
-          <div class="cal-day" data-date="13">13</div>
-          <div class="cal-day" data-date="14">14</div>
-          <div class="cal-day is-open" data-date="15">15</div>
-          <div class="cal-day" data-date="16">16</div>
-          <div class="cal-day is-open" data-date="17">17</div>
-          <div class="cal-day" data-date="18">18</div>
-          <div class="cal-day" data-date="19">19</div>
-          <div class="cal-day" data-date="20">20</div>
-          <div class="cal-day" data-date="21">21</div>
-          <div class="cal-day" data-date="22">22</div>
-          <div class="cal-day" data-date="23">23</div>
-          <div class="cal-day" data-date="24">24</div>
-          <div class="cal-day" data-date="25">25</div>
-          <div class="cal-day" data-date="26">26</div>
-          <div class="cal-day" data-date="27">27</div>
-          <div class="cal-day" data-date="28">28</div>
-          <div class="cal-day" data-date="29">29</div>
-          <div class="cal-day" data-date="30">30</div>
-        </div>
-        <div class="calendar-legend">
-          <span class="legend-item"><span class="legend-dot" style="background:#4caf50;"></span>P25</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#2f6fed;"></span>P50</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#ff8a3d;"></span>P100</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#e0453f;"></span>P250</span>
-        </div>
-      </div>
-
-      <div class="calendar-detail" id="calendarDetail">
-        <p class="detail-empty">Sélectionnez une date en couleur dans le calendrier pour afficher les créneaux disponibles.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<script>
-(function(){
-  const sessionsByDate = {
-    "5":  { label: "Samedi 5 septembre",  sessions: [
-      { time: "9h00 – 10h30",  level: "Niveau 3/4 · P25",  color: "#4caf50" },
-      { time: "10h30 – 12h00", level: "Niveau 4+/5 · P50", color: "#2f6fed" },
-      { time: "12h00 – 13h30", level: "Niveau 6+ · P100",  color: "#ff8a3d" }
-    ]},
-    "10": { label: "Jeudi 10 septembre",  sessions: [
-      { time: "18h00 – 19h30", level: "Niveau 4+/5 · P50",       color: "#2f6fed" },
-      { time: "19h30 – 21h00", level: "Niveau avancé · P100",    color: "#ff8a3d" },
-      { time: "21h00 – 22h30", level: "Niveau compétition · P250", color: "#e0453f" }
-    ]},
-    "12": { label: "Samedi 12 septembre", sessions: [
-      { time: "9h00 – 10h30",  level: "Niveau 3/4 · P25",  color: "#4caf50" },
-      { time: "10h30 – 12h00", level: "Niveau 4+/5 · P50", color: "#2f6fed" },
-      { time: "12h00 – 13h30", level: "Niveau 6+ · P100",  color: "#ff8a3d" }
-    ]},
-    "15": { label: "Mardi 15 septembre",  sessions: [
-      { time: "18h00 – 19h30", level: "Niveau 4/4+ · P25", color: "#4caf50" },
-      { time: "19h30 – 21h00", level: "Niveau 6+ · P100",  color: "#ff8a3d" },
-      { time: "21h00 – 22h30", level: "Niveau 6+ · P100",  color: "#ff8a3d" }
-    ]},
-    "17": { label: "Jeudi 17 septembre",  sessions: [
-      { time: "18h00 – 19h30", level: "Niveau 4+/5 · P50",       color: "#2f6fed" },
-      { time: "19h30 – 21h00", level: "Niveau avancé · P100",    color: "#ff8a3d" },
-      { time: "21h00 – 22h30", level: "Niveau compétition · P250", color: "#e0453f" }
-    ]}
-  };
-
-  const grid = document.getElementById("calendarGrid");
-  const detail = document.getElementById("calendarDetail");
-  if(!grid || !detail) return;
-
-  // Ajoute les pastilles de niveau sous chaque date ouverte
-  Object.keys(sessionsByDate).forEach(function(dateKey){
-    const cell = grid.querySelector('.cal-day[data-date="' + dateKey + '"]');
-    if(!cell) return;
-    const dots = document.createElement("div");
-    dots.className = "cal-dots";
-    sessionsByDate[dateKey].sessions.forEach(function(s){
-      const dot = document.createElement("span");
-      dot.style.background = s.color;
-      dots.appendChild(dot);
-    });
-    cell.appendChild(dots);
-  });
-
-  grid.querySelectorAll(".cal-day.is-open").forEach(function(cell){
-    cell.addEventListener("click", function(){
-      grid.querySelectorAll(".cal-day.is-active").forEach(function(c){ c.classList.remove("is-active"); });
-      cell.classList.add("is-active");
-
-      const data = sessionsByDate[cell.dataset.date];
-      if(!data) return;
-
-      let html = '<div class="detail-date">' + data.label + '</div>';
-      data.sessions.forEach(function(s){
-        html += '<div class="detail-session">'
-          + '<span class="dot" style="background:' + s.color + ';"></span>'
-          + '<div class="info"><div class="time">' + s.time + '</div><div class="level">' + s.level + '</div></div>'
-          + '</div>';
-      });
-      html += '<a href="#" id="calendarReserveBtn" class="btn btn-primary">Réserver ce créneau sur WhatsApp</a>';
-      detail.innerHTML = html;
-      if(typeof window.wirePlanningWhatsappBtn === "function"){ window.wirePlanningWhatsappBtn(data.label); }
-    });
-  });
-})();
-</script>
-
-<!-- ==========================================================================
-     PLANNING HEBDOMADAIRE
+     PLACEHOLDER — À COMPLÉTER AVEC LE PLANNING MENSUEL
      ========================================================================== -->
 <section class="section section--tint">
   <div class="container">
     <div class="section-head" style="text-align:center; margin-left:auto; margin-right:auto;">
-      <div class="eyebrow" style="justify-content:center;">Planning type</div>
-      <h2 class="section-title">Le planning hebdomadaire des cours collectifs à Toulouse</h2>
-      <p class="section-sub">Trois créneaux par jour, du niveau intermédiaire au niveau compétition.</p>
+      <div class="eyebrow" style="justify-content:center;">Bientôt disponible</div>
+      <h2 class="section-title">Le planning arrive très prochainement</h2>
+      <p class="section-sub">Cette page affichera bientôt le planning mensuel des cours collectifs par niveau et par groupe. En attendant, contactez-moi directement pour connaître les disponibilités.</p>
     </div>
-
-    <div class="stage-days-grid" style="grid-template-columns: repeat(3, 1fr); margin-top:36px;">
-      <div>
-        <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Samedi</h3>
-        <div class="slot-card" style="border-left:4px solid #4caf50; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">9h00 – 10h30</div><div class="slot-time">Niveau 3/4</div></div>
-            <span class="slot-level">P25</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #2f6fed; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">10h30 – 12h00</div><div class="slot-time">Niveau 4+/5</div></div>
-            <span class="slot-level">P50</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #ff8a3d;">
-          <div class="slot-top">
-            <div><div class="slot-day">12h00 – 13h30</div><div class="slot-time">Niveau 6+</div></div>
-            <span class="slot-level">P100</span>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Mardi</h3>
-        <div class="slot-card" style="border-left:4px solid #4caf50; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">18h00 – 19h30</div><div class="slot-time">Niveau 4/4+</div></div>
-            <span class="slot-level">P25</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #ff8a3d; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">19h30 – 21h00</div><div class="slot-time">Niveau 6+</div></div>
-            <span class="slot-level">P100</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #ff8a3d;">
-          <div class="slot-top">
-            <div><div class="slot-day">21h00 – 22h30</div><div class="slot-time">Niveau 6+</div></div>
-            <span class="slot-level">P100</span>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h3 style="font-size:18px; font-weight:800; margin-bottom:16px;">Jeudi</h3>
-        <div class="slot-card" style="border-left:4px solid #2f6fed; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">18h00 – 19h30</div><div class="slot-time">Niveau 4+/5</div></div>
-            <span class="slot-level">P50</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #ff8a3d; margin-bottom:14px;">
-          <div class="slot-top">
-            <div><div class="slot-day">19h30 – 21h00</div><div class="slot-time">Niveau avancé</div></div>
-            <span class="slot-level">P100</span>
-          </div>
-        </div>
-        <div class="slot-card" style="border-left:4px solid #e0453f;">
-          <div class="slot-top">
-            <div><div class="slot-day">21h00 – 22h30</div><div class="slot-time">Niveau compétition</div></div>
-            <span class="slot-level">P250</span>
-          </div>
-        </div>
-      </div>
+    <div style="text-align:center; margin-top:12px;">
+      <a href="index.html#contact" class="btn btn-primary">Me contacter</a>
     </div>
   </div>
 </section>
@@ -1159,11 +908,6 @@ const siteData = {
   setHref("contactWhatsappBtn", whatsappBaseLink("Bonjour, je souhaite avoir plus d'informations sur vos cours."));
   setHref("footerWhatsappLink", siteData.links.whatsapp);
   setHref("mobileBarWhatsappBtn", whatsappBaseLink("Bonjour, je souhaite avoir plus d'informations sur vos cours."));
-
-  /* ---- Bouton WhatsApp du calendrier (planning collectifs) ---- */
-  window.wirePlanningWhatsappBtn = function(dateLabel){
-    setHref("calendarReserveBtn", whatsappBaseLink("Bonjour, je souhaite réserver un créneau du " + dateLabel + "."));
-  };
   setHref("contactInstagramBtn", siteData.links.instagram);
   setHref("footerInstagramLink", siteData.links.instagram);
 
