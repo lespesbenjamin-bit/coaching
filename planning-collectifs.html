@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planning des Cours Collectifs — Padel Toulouse & Colomiers | Benjamin Lespes</title>
-<meta name="description" content="Planning mensuel des cours collectifs de padel à Toulouse et Colomiers, par niveau et par groupe. Bientôt disponible.">
+<meta name="description" content="Planning des cours collectifs de padel à Toulouse et Colomiers : consultez le remplissage des groupes par niveau et réservez votre place.">
 <link rel="canonical" href="https://coachpadeltoulouse.fr/planning-collectifs.html">
-<meta name="robots" content="noindex, follow">
+<meta name="robots" content="index, follow">
 <meta name="author" content="Benjamin Lespes">
 <meta name="theme-color" content="#0b0d0c">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -438,6 +438,81 @@ p{ margin:0; }
 
 .no-results{ grid-column: 1 / -1; text-align:center; padding: 50px 20px; color: var(--gray-mid); }
 
+/* ==========================================================================
+   CALENDRIER MENSUEL — COURS PONCTUELS
+   ========================================================================== */
+.cal-head{
+  display:flex; align-items:center; justify-content:center; gap:22px; margin-bottom:26px;
+}
+.cal-month-title{ font-size: clamp(22px, 3vw, 30px); font-weight:800; min-width:220px; text-align:center; }
+.cal-nav-btn{
+  width:40px; height:40px; border-radius:50%; border:1px solid var(--gray-line); background:var(--white);
+  font-size:20px; line-height:1; color:var(--black); display:flex; align-items:center; justify-content:center;
+  transition: background .2s ease, border-color .2s ease;
+}
+.cal-nav-btn:hover{ background: var(--gray-light); border-color: var(--gray-mid-dark); }
+.cal-nav-btn:disabled{ opacity:0.3; cursor:default; }
+
+.cal-weekdays{
+  display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; margin-bottom:8px;
+  font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color: var(--gray-mid);
+  text-align:center;
+}
+
+.cal-grid{ display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; }
+.cal-cell{
+  aspect-ratio: 1 / 1; border-radius: var(--radius-md); border:1px solid var(--gray-line);
+  background: var(--white); padding:8px 6px; display:flex; flex-direction:column; overflow:hidden;
+  transition: box-shadow .2s ease, border-color .2s ease, background .2s ease;
+}
+.cal-cell.is-empty{ border-color:transparent; }
+.cal-cell.has-courses{ cursor:pointer; }
+.cal-cell.has-courses:hover{ box-shadow: var(--shadow-soft); border-color: var(--gray-mid-dark); }
+.cal-cell.is-selected{ background: var(--black); border-color: var(--black); }
+.cal-cell.is-selected .cal-daynum{ color: var(--white); }
+.cal-daynum{ font-size:13px; font-weight:700; color: var(--black); }
+.cal-dots{ display:flex; flex-wrap:wrap; gap:4px; margin-top:auto; }
+.cal-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+/* Détail des cours affiché directement dans la case, écrans larges uniquement */
+.cal-inline-list{ display:none; }
+@media (min-width: 640px){
+  .cal-cell{ padding:10px 8px; }
+  .cal-inline-list{ display:flex; flex-direction:column; gap:3px; margin-top:6px; overflow:hidden; }
+  .cal-inline-item{ display:flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; color: var(--gray-mid); line-height:1.25; }
+  .cal-cell.is-selected .cal-inline-item{ color: rgba(255,255,255,0.75); }
+  .cal-inline-item .cal-dot{ width:6px; height:6px; }
+  .cal-dots{ display:none; }
+}
+
+.cal-legend{
+  display:flex; flex-wrap:wrap; gap:18px; justify-content:center; margin-top:30px; padding-top:24px;
+  border-top:1px solid var(--gray-line);
+}
+.cal-legend-item{ display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700; color: var(--black); }
+.cal-legend-item .cal-dot{ width:11px; height:11px; }
+
+.cal-detail{ margin-top:22px; }
+.cal-detail:empty{ display:none; }
+.cal-detail-box{
+  background: var(--gray-light); border-radius: var(--radius-lg); padding:26px 24px; animation: calFadeUp .25s ease;
+}
+.cal-detail-box h3{ font-size:18px; font-weight:800; margin-bottom:16px; }
+.cal-detail-row{ display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--gray-line); }
+.cal-detail-row:last-child{ border-bottom:none; }
+.cal-detail-row .cal-dot{ width:12px; height:12px; }
+.cal-detail-time{ font-weight:800; font-size:14px; min-width:120px; }
+.cal-detail-level{ font-size:14px; color: var(--gray-mid); font-weight:600; }
+@keyframes calFadeUp{ from{ opacity:0; transform: translateY(8px);} to{ opacity:1; transform: translateY(0);} }
+
+@media (max-width: 480px){
+  .cal-weekdays{ font-size:10px; gap:5px; }
+  .cal-grid{ gap:5px; }
+  .cal-daynum{ font-size:11px; }
+  .cal-dot{ width:6px; height:6px; }
+}
+
+
 @media (max-width: 800px){ .planning-grid{ grid-template-columns: 1fr; } }
 
 
@@ -769,23 +844,30 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
   <div class="container">
     <div class="eyebrow">Cours collectifs</div>
     <h1>Planning des cours collectifs</h1>
-    <p>Retrouvez ici le planning mensuel des cours collectifs, groupe par groupe.</p>
+    <p>Retrouvez ici les cours collectifs ponctuels du mois, jour par jour.</p>
   </div>
 </section>
 
 <!-- ==========================================================================
-     PLACEHOLDER — À COMPLÉTER AVEC LE PLANNING MENSUEL
+     CALENDRIER MENSUEL — COURS PONCTUELS
      ========================================================================== -->
-<section class="section section--tint">
+<section class="section">
   <div class="container">
-    <div class="section-head" style="text-align:center; margin-left:auto; margin-right:auto;">
-      <div class="eyebrow" style="justify-content:center;">Bientôt disponible</div>
-      <h2 class="section-title">Le planning arrive très prochainement</h2>
-      <p class="section-sub">Cette page affichera bientôt le planning mensuel des cours collectifs par niveau et par groupe. En attendant, contactez-moi directement pour connaître les disponibilités.</p>
+    <div class="cal-head">
+      <button type="button" class="cal-nav-btn" id="calPrev" aria-label="Mois précédent">‹</button>
+      <h2 class="cal-month-title" id="calMonthTitle">Septembre 2026</h2>
+      <button type="button" class="cal-nav-btn" id="calNext" aria-label="Mois suivant">›</button>
     </div>
-    <div style="text-align:center; margin-top:12px;">
-      <a href="index.html#contact" class="btn btn-primary">Me contacter</a>
+
+    <div class="cal-weekdays">
+      <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
     </div>
+
+    <div class="cal-grid" id="calGrid"></div>
+
+    <div class="cal-legend" id="calLegend"></div>
+
+    <div class="cal-detail" id="calDetail"></div>
   </div>
 </section>
 
@@ -871,10 +953,29 @@ const siteData = {
     bookMyCoach: "https://bookmycoach.vercel.app/c/benjamin-lespes",
     whatsapp: "https://wa.me/33679096574",
     instagram: "https://www.instagram.com/pepes_24/"
-  }
+  },
 
-  // ---- PLANNING MENSUEL DES COURS COLLECTIFS ----
-  // À compléter : cette page affichera le planning par groupe/niveau, mois par mois.
+  // ---- NIVEAUX / CATÉGORIES — couleurs de la légende et des pastilles ----
+  // ⚠️ Aucune couleur n'était encore associée à ces catégories dans le projet :
+  // ces 3 couleurs ont été choisies pour rester cohérentes avec la charte (noir / jaune signature)
+  // tout en étant bien distinctes les unes des autres.
+  levelColors: {
+    "Débutants":     "#ff6f91",
+    "Niveau 4+/5":   "#d9ff3f",
+    "Niveau 5+/6":   "#4fd6c0"
+  },
+
+  // ---- COURS PONCTUELS — CALENDRIER MENSUEL ----
+  // Format de date : "YYYY-MM-DD"
+  monthlyCourses: [
+    { date: "2026-09-12", time: "9h00 – 10h30",  level: "Débutants" },
+    { date: "2026-09-12", time: "10h30 – 12h00", level: "Niveau 4+/5" },
+    { date: "2026-09-12", time: "12h00 – 13h30", level: "Niveau 5+/6" },
+    { date: "2026-09-15", time: "18h00 – 19h30", level: "Niveau 4+/5" },
+    { date: "2026-09-15", time: "19h30 – 21h00", level: "Niveau 5+/6" },
+    { date: "2026-09-17", time: "18h00 – 19h30", level: "Niveau 4+/5" },
+    { date: "2026-09-17", time: "19h30 – 21h00", level: "Niveau 5+/6" }
+  ]
 };
 
 /* ==========================================================================
@@ -910,6 +1011,126 @@ const siteData = {
   setHref("mobileBarWhatsappBtn", whatsappBaseLink("Bonjour, je souhaite avoir plus d'informations sur vos cours."));
   setHref("contactInstagramBtn", siteData.links.instagram);
   setHref("footerInstagramLink", siteData.links.instagram);
+
+  /* ---- Calendrier mensuel des cours ponctuels ---- */
+  const calGrid = document.getElementById("calGrid");
+  const calMonthTitle = document.getElementById("calMonthTitle");
+  const calLegend = document.getElementById("calLegend");
+  const calDetail = document.getElementById("calDetail");
+  const calPrev = document.getElementById("calPrev");
+  const calNext = document.getElementById("calNext");
+
+  if(calGrid && siteData.monthlyCourses){
+    const MONTH_NAMES = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+
+    // Mois affichés : uniquement ceux où des cours existent (évite une navigation vers des mois vides)
+    const monthsWithCourses = [...new Set(siteData.monthlyCourses.map(c => c.date.slice(0,7)))].sort();
+    let currentMonthIndex = 0; // index dans monthsWithCourses
+    let selectedDate = null;
+
+    function pad(n){ return String(n).padStart(2, "0"); }
+
+    function coursesForDate(dateStr){
+      return siteData.monthlyCourses.filter(c => c.date === dateStr).sort((a,b) => a.time.localeCompare(b.time));
+    }
+
+    function renderLegend(){
+      calLegend.innerHTML = "";
+      Object.entries(siteData.levelColors).forEach(([level, color]) => {
+        calLegend.appendChild(el(`
+          <div class="cal-legend-item">
+            <span class="cal-dot" style="background:${color}"></span>
+            <span>${level}</span>
+          </div>
+        `));
+      });
+    }
+
+    function renderDetail(dateStr){
+      if(!dateStr){ calDetail.innerHTML = ""; return; }
+      const courses = coursesForDate(dateStr);
+      if(courses.length === 0){ calDetail.innerHTML = ""; return; }
+      const [y, m, d] = dateStr.split("-").map(Number);
+      const dateLabel = new Date(y, m - 1, d).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+      const rowsHtml = courses.map(c => `
+        <div class="cal-detail-row">
+          <span class="cal-dot" style="background:${siteData.levelColors[c.level] || "#999"}"></span>
+          <span class="cal-detail-time">${c.time}</span>
+          <span class="cal-detail-level">${c.level}</span>
+        </div>
+      `).join("");
+      calDetail.innerHTML = "";
+      calDetail.appendChild(el(`
+        <div class="cal-detail-box">
+          <h3>${dateLabel.charAt(0).toUpperCase() + dateLabel.slice(1)}</h3>
+          ${rowsHtml}
+        </div>
+      `));
+    }
+
+    function renderCalendar(){
+      if(monthsWithCourses.length === 0) return;
+      const [year, month] = monthsWithCourses[currentMonthIndex].split("-").map(Number);
+      calMonthTitle.textContent = `${MONTH_NAMES[month - 1]} ${year}`;
+      calPrev.disabled = currentMonthIndex === 0;
+      calNext.disabled = currentMonthIndex === monthsWithCourses.length - 1;
+
+      calGrid.innerHTML = "";
+
+      const firstDay = new Date(year, month - 1, 1);
+      // Lundi = 0 ... Dimanche = 6
+      const leadingBlanks = (firstDay.getDay() + 6) % 7;
+      const daysInMonth = new Date(year, month, 0).getDate();
+
+      for(let i = 0; i < leadingBlanks; i++){
+        calGrid.appendChild(el(`<div class="cal-cell is-empty"></div>`));
+      }
+
+      for(let day = 1; day <= daysInMonth; day++){
+        const dateStr = `${year}-${pad(month)}-${pad(day)}`;
+        const courses = coursesForDate(dateStr);
+        const hasCourses = courses.length > 0;
+
+        const dotsHtml = courses.map(c => `<span class="cal-dot" style="background:${siteData.levelColors[c.level] || "#999"}"></span>`).join("");
+        const inlineHtml = courses.map(c => `
+          <span class="cal-inline-item">
+            <span class="cal-dot" style="background:${siteData.levelColors[c.level] || "#999"}"></span>
+            ${c.time.split(" – ")[0]} ${c.level}
+          </span>
+        `).join("");
+
+        const cell = el(`
+          <div class="cal-cell ${hasCourses ? "has-courses" : ""}" data-date="${dateStr}">
+            <span class="cal-daynum">${day}</span>
+            ${hasCourses ? `<div class="cal-dots">${dotsHtml}</div><div class="cal-inline-list">${inlineHtml}</div>` : ""}
+          </div>
+        `);
+
+        if(hasCourses){
+          cell.setAttribute("title", courses.map(c => `${c.time} — ${c.level}`).join("\n"));
+          cell.addEventListener("click", () => {
+            selectedDate = selectedDate === dateStr ? null : dateStr;
+            calGrid.querySelectorAll(".cal-cell").forEach(c => c.classList.remove("is-selected"));
+            if(selectedDate) cell.classList.add("is-selected");
+            renderDetail(selectedDate);
+            if(selectedDate) calDetail.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          });
+        }
+
+        calGrid.appendChild(cell);
+      }
+    }
+
+    calPrev.addEventListener("click", () => {
+      if(currentMonthIndex > 0){ currentMonthIndex--; selectedDate = null; renderCalendar(); renderDetail(null); }
+    });
+    calNext.addEventListener("click", () => {
+      if(currentMonthIndex < monthsWithCourses.length - 1){ currentMonthIndex++; selectedDate = null; renderCalendar(); renderDetail(null); }
+    });
+
+    renderLegend();
+    renderCalendar();
+  }
 
   /* ---- Navigation mobile ---- */
   const navToggle = document.getElementById("navToggle");
