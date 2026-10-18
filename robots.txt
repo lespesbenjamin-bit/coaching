@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://coachpadeltoulouse.fr/sitemap.xml
+Sitemap: https://www.coachpadeltoulouse.fr/sitemap.xml
