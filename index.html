@@ -289,7 +289,27 @@ p{ margin:0; }
   display:inline-block; background:var(--yellow); color:var(--black); font-size:11px; font-weight:800;
   padding:4px 10px; border-radius:100px; text-transform:uppercase; margin-bottom:12px;
 }
-@media (max-width: 900px){ .solo-grid{ grid-template-columns: 1fr; } }
+.technique-card{
+  background: var(--black); color: var(--white); border-radius: var(--radius-lg);
+  padding: 40px; position:relative; overflow:hidden; margin-top: 40px;
+  display:grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items:center;
+}
+.technique-card::after{
+  content:""; position:absolute; width:220px; height:220px; border-radius:50%;
+  background: var(--yellow); opacity:0.12; right:-70px; top:-70px; pointer-events:none;
+}
+.technique-card > *{ position:relative; z-index:1; }
+.technique-gestes{ display:flex; flex-wrap:wrap; gap:10px; margin: 20px 0 6px; }
+.technique-gestes span{
+  border:1px solid rgba(214,255,63,0.5); color: var(--yellow); border-radius:100px;
+  padding:6px 14px; font-size:13px; font-weight:700;
+}
+.technique-card .solo-list{ margin: 22px 0 0; }
+.technique-side{ text-align:left; }
+@media (max-width: 900px){
+  .solo-grid{ grid-template-columns: 1fr; }
+  .technique-card{ grid-template-columns: 1fr; gap: 24px; padding: 30px 24px; }
+}
 
 /* ==========================================================================
    PACKS
@@ -938,6 +958,33 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
         <a href="#" id="soloBookBtn" class="btn btn-primary btn-block">Réserver un cours individuel</a>
       </div>
     </div>
+
+    <!-- Formule 3 séances — geste technique -->
+    <div class="technique-card" id="formule-technique">
+      <div>
+        <div class="eyebrow" style="color:var(--yellow)">Formule geste technique</div>
+        <h3 style="font-size: clamp(26px, 3vw, 34px); font-weight:800;">3 séances sur un geste technique</h3>
+        <div class="technique-gestes">
+          <span>Vibora</span>
+          <span>Sortie de vitre</span>
+          <span>Volée</span>
+          <span>Bajada</span>
+        </div>
+        <ul class="solo-list">
+          <li>Un geste au choix, travaillé en profondeur sur 3 séances</li>
+          <li>Aspect technique : placement, mouvement et exécution</li>
+          <li>Travail de zone et de vitesse</li>
+          <li>Intégration tactique : quand et pourquoi utiliser le geste en match</li>
+        </ul>
+      </div>
+      <div class="technique-side">
+        <div class="solo-price">
+          <span class="amount" id="techniquePrice"></span>
+          <span class="unit">/ 3 séances</span>
+        </div>
+        <a href="tel:+33679096574" class="btn btn-primary btn-block" id="techniqueBookBtn">Réserver : 06 79 09 65 74</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1218,6 +1265,7 @@ const siteData = {
   // ---- TARIFS ----
   pricing: {
     soloSession: 45, // tarif du cours individuel (€ / heure)
+    techniquePack: 135, // formule 3 séances sur un geste technique (€)
 
     packs: [
       {
@@ -1366,6 +1414,7 @@ const siteData = {
 
   /* ---- Tarif cours individuel ---- */
   setText("soloPrice", euro(siteData.pricing.soloSession));
+  setText("techniquePrice", euro(siteData.pricing.techniquePack));
 
   /* ---- Packs ---- */
   const packsGrid = document.getElementById("packsGrid");
