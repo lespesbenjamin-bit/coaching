@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stage de Padel Toulouse & Colomiers — Stages du moment</title>
-<meta name="description" content="Stage de padel à la carte à Toulouse et Colomiers : réservez à la journée (50€) ou à la semaine (200€), par niveau, selon les places disponibles.">
+<title>Stage de Padel de Noël Toulouse & Colomiers — Inscription</title>
+<meta name="description" content="Inscription au stage de padel de Noël à Toulouse et Colomiers avec Benjamin Lespes, à l'Ace Padel Club.">
 <link rel="canonical" href="https://www.coachpadeltoulouse.fr/planning.html">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Benjamin Lespes">
@@ -21,13 +21,13 @@
 <meta property="og:site_name" content="Coach Padel Toulouse">
 <meta property="og:url" content="https://www.coachpadeltoulouse.fr/planning.html">
 <meta property="og:title" content="Nos stages du moment — Benjamin Lespes, Coach Padel Toulouse">
-<meta property="og:description" content="Stage de padel à la journée ou à la semaine, par niveau, à Toulouse et Colomiers.">
+<meta property="og:description" content="Inscription au stage de padel de Noël, à Toulouse et Colomiers.">
 <meta property="og:image" content="https://www.coachpadeltoulouse.fr/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Nos stages du moment — Benjamin Lespes">
-<meta name="twitter:description" content="Stage de padel à la journée ou à la semaine, par niveau, à Toulouse et Colomiers.">
+<meta name="twitter:description" content="Inscription au stage de padel de Noël, à Toulouse et Colomiers.">
 <meta name="twitter:image" content="https://www.coachpadeltoulouse.fr/og-image.jpg">
 <style>
 /* ==========================================================================
@@ -599,6 +599,29 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 .page-hero .eyebrow{ justify-content:center; }
 .page-hero h1{ font-size: clamp(30px, 4.5vw, 48px); font-weight:800; margin-top:10px; }
 .page-hero p{ color: rgba(255,255,255,0.65); max-width:560px; margin:16px auto 0; font-size:16px; }
+
+/* ==========================================================================
+   FORMULAIRE D'INSCRIPTION
+   ========================================================================== */
+.signup-wrap{ max-width: 680px; margin: 0 auto; }
+.contact-form{ background: var(--white); border:1px solid var(--gray-line); border-radius: var(--radius-lg); padding: 34px; }
+.form-row{ display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px; }
+.form-field{ display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+.form-row .form-field{ margin-bottom:0; }
+.form-field label{ font-size:13px; font-weight:700; }
+.form-field input, .form-field select, .form-field textarea{
+  padding: 12px 14px; border-radius: var(--radius-sm); border: 1px solid var(--gray-line);
+  font-size: 14px; font-family: inherit; background: var(--gray-light);
+}
+.form-field textarea{ resize: vertical; min-height: 110px; }
+.form-success{
+  display:none; background:#eefadd; color:#3f6317; border-radius: var(--radius-sm); padding: 16px 18px;
+  font-size:14px; font-weight:600; margin-top:16px;
+}
+.form-success.is-visible{ display:block; }
+.form-error{ display:none; background:#fdeaea; color:#9b2c2c; border-radius: var(--radius-sm); padding:16px 18px; font-size:14px; font-weight:600; margin-top:16px; }
+.form-error.is-visible{ display:block; }
+@media (max-width: 700px){ .form-row{ grid-template-columns:1fr; } .contact-form{ padding:24px 20px; } }
 </style>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -764,22 +787,69 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 <section class="page-hero">
   <div class="container">
     <div class="eyebrow">Offre temporaire</div>
-    <h1>Nos stages du moment</h1>
-    <p>Retrouvez ici les stages et sessions à la carte en cours d'inscription, jour par jour ou pour la semaine complète.</p>
+    <h1>Stage de Noël</h1>
+    <p>Inscrivez-vous au stage de padel de Noël avec Benjamin Lespes, à Toulouse et Colomiers.</p>
   </div>
 </section>
 
 <!-- ==========================================================================
-     STAGE DE PRÉ-RENTRÉE
+     INSCRIPTION — STAGE DE NOËL
      ========================================================================== -->
 <section class="section section--tint" id="stage">
   <div class="container">
-    <div class="section-head" style="text-align:center; margin-left:auto; margin-right:auto;">
-      <div class="eyebrow" style="justify-content:center;">Stage intensif</div>
-      <h2 class="section-title">Stage de pré-rentrée</h2>
-      <p class="section-sub">Du lundi 17 au vendredi 21 août (mercredi off) — à la journée ou à la semaine complète, selon vos disponibilités.</p>
+    <div class="signup-wrap">
+      <div class="section-head" style="text-align:center; margin-left:auto; margin-right:auto;">
+        <div class="eyebrow" style="justify-content:center;">Inscription</div>
+        <h2 class="section-title">Stage de Noël</h2>
+        <p class="section-sub">Remplissez le formulaire pour vous inscrire au stage de Noël.</p>
+      </div>
+      <form class="contact-form js-signup-form" id="stageNoelForm" novalidate>
+        <input type="hidden" name="formulaire" value="Inscription stage de Noël">
+        <input type="hidden" name="_subject" value="Inscription — Stage de Noël">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="stageNoelForm_prenom">Prénom</label>
+            <input id="stageNoelForm_prenom" name="prenom" type="text" required autocomplete="given-name">
+          </div>
+          <div class="form-field">
+            <label for="stageNoelForm_nom">Nom</label>
+            <input id="stageNoelForm_nom" name="nom" type="text" required autocomplete="family-name">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="stageNoelForm_email">E-mail</label>
+            <input id="stageNoelForm_email" name="email" type="email" required autocomplete="email">
+          </div>
+          <div class="form-field">
+            <label for="stageNoelForm_tel">Téléphone</label>
+            <input id="stageNoelForm_tel" name="telephone" type="tel" required autocomplete="tel">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="stageNoelForm_niveau">Niveau approximatif</label>
+            <select id="stageNoelForm_niveau" name="niveau">
+              <option>Débutant</option>
+              <option>P25</option>
+              <option>P50</option>
+              <option>P100</option>
+              <option>P100+</option>
+              <option>P250</option>
+              <option>Je ne sais pas</option>
+            </select>
+          </div>
+          <div class="form-field"></div>
+        </div>
+        <div class="form-field">
+          <label for="stageNoelForm_message">Message (facultatif)</label>
+          <textarea id="stageNoelForm_message" name="message" placeholder="Une précision, une question..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">M'inscrire au stage de Noël</button>
+        <div class="form-success" role="status">Merci, votre demande a bien été envoyée. Je vous recontacte très vite.</div>
+        <div class="form-error" role="alert">Une erreur est survenue. Merci de réessayer ou de me contacter directement au 06 79 09 65 74.</div>
+      </form>
     </div>
-    <div id="stageGroups"></div>
   </div>
 </section>
 
@@ -1008,17 +1078,26 @@ const siteData = {
     });
   }
 
-  /* ---- Formulaire de contact (démonstration, pas d'envoi réel) ---- */
-  const contactForm = document.getElementById("contactForm");
-  const formSuccess = document.getElementById("formSuccess");
-  if(contactForm && formSuccess){
-    contactForm.addEventListener("submit", (e) => {
+  /* ---- Formulaires d'inscription (envoi via Formspree) ---- */
+  const FORM_ENDPOINT = "https://formspree.io/f/xykroenj";
+  document.querySelectorAll(".js-signup-form").forEach(form => {
+    const ok = form.querySelector(".form-success");
+    const ko = form.querySelector(".form-error");
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
-      formSuccess.classList.add("is-visible");
-      contactForm.reset();
-      formSuccess.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      ok.classList.remove("is-visible"); ko.classList.remove("is-visible");
+      if(!form.checkValidity()){ form.reportValidity(); return; }
+      const btn = form.querySelector("button[type=submit]");
+      btn.disabled = true;
+      fetch(FORM_ENDPOINT, { method: "POST", body: new FormData(form), headers: { "Accept": "application/json" } })
+        .then(r => {
+          if(r.ok){ ok.classList.add("is-visible"); form.reset(); ok.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+          else { ko.classList.add("is-visible"); }
+        })
+        .catch(() => { ko.classList.add("is-visible"); })
+        .finally(() => { btn.disabled = false; });
     });
-  }
+  });
 
   /* ---- Modales mentions légales / confidentialité ---- */
   function openModal(modal){ modal.classList.add("is-open"); }
