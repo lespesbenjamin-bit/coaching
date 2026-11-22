@@ -34,7 +34,7 @@ export default function ConnexionForm() {
 
   async function reset() {
     const email = prompt('Votre e-mail :'); if (!email) return;
-    await browserClient().auth.resetPasswordForEmail(email.trim(), { redirectTo: `${location.origin}/auth/callback?next=/mon-espace?tab=profil` });
+    await browserClient().auth.resetPasswordForEmail(email.trim(), { redirectTo: `${location.origin}/auth/callback?next=/mot-de-passe` });
     setMsg({ ok: true, t: 'Si ce compte existe, un e-mail de réinitialisation a été envoyé.' });
   }
 
