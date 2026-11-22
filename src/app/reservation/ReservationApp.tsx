@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
+import WeekGrid from '@/components/WeekGrid';
 import { dayKey, formatDay, formatTime, euros, durationMin } from '@/lib/dates';
 
 type CType = { code: string; label: string; min_participants: number; max_participants: number; default_duration_min: number; price_per_person_cents: number };
@@ -19,6 +20,8 @@ export default function ReservationApp() {
   const [type, setType] = useState<CType | null>(null);
   const [view, setView] = useState<'week' | 'month'>('week');
   const [anchor, setAnchor] = useState(() => dayKey(new Date().toISOString()));
+  const [wide, setWide] = useState(false);
+  useEffect(() => { const m = window.matchMedia('(min-width: 900px)'); const f = () => setWide(m.matches); f(); m.addEventListener('change', f); return () => m.removeEventListener('change', f); }, []);
   const [pickedDay, setPickedDay] = useState<string | null>(null);
   const [slot, setSlot] = useState<Slot | null>(null);
   const [participants, setParticipants] = useState(1);
@@ -116,7 +119,10 @@ export default function ReservationApp() {
           {typeSlots.length > 0 && view === 'week' && (
             <div className="days">
               {weekDays.filter(d => byDay[d]).length === 0 && <div className="empty panel">Aucun créneau cette semaine — essayez la semaine suivante.</div>}
-              {weekDays.filter(d => byDay[d]).map(d => <DayBlock key={d} day={d} slots={byDay[d]} type={type} onPick={chooseSlot} />)}
+              {wide && weekDays.some(d => byDay[d]) && <WeekGrid weekStart={weekStart} startHour={8} endHour={21}
+                events={weekDays.flatMap(d => byDay[d] ?? []).map(s => ({ id: s.id, startsAt: s.starts_at, endsAt: s.ends_at, title: s.booking_mode === 'auto' && s.court_secured ? 'Réserver' : 'Demander', sub: s.capacity > 1 ? `${s.seats_left} place(s)` : undefined, tone: s.booking_mode === 'auto' && s.court_secured ? 'open' as const : 'pending' as const }))}
+                onEvent={e => { const s = typeSlots.find(x => x.id === e.id); if (s) chooseSlot(s); }} />}
+              {!wide && weekDays.filter(d => byDay[d]).map(d => <DayBlock key={d} day={d} slots={byDay[d]} type={type} onPick={chooseSlot} />)}
             </div>)}
 
           {typeSlots.length > 0 && view === 'month' && (

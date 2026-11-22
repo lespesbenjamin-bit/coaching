@@ -5,6 +5,7 @@ import { formatDay, formatTime, dayKey, euros } from '@/lib/dates';
 import { STATUS_LABELS, type BookingStatus } from '@/lib/booking-rules';
 import { BookingButtons, NoteField, SessionForm, DeleteSession } from './Actions';
 import AdminNav from '@/components/AdminNav';
+import AdminCalendar from './AdminCalendar';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Agenda — administration', robots: { index: false, follow: false } };
@@ -14,6 +15,7 @@ async function logout() { 'use server'; const { sessionClient } = await import('
 export default async function Page({ searchParams }: { searchParams: Promise<{ vue?: string }> }) {
   if (!(await getAdminUser())) redirect('/admin/login');
   const { vue } = await searchParams;
+  const listMode = vue === 'liste' || vue === 'semaine' || vue === 'mois';
   const horizon = vue === 'mois' ? 31 : 7;
   const supa = serviceClient();
   const now = new Date(); const until = new Date(now.getTime() + horizon * 86400000).toISOString();
@@ -50,7 +52,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ v
           </tbody></table></div>)}
       </section>
 
-      <div className="grid2">
+      <div className="seg" style={{ marginBottom: 16 }}><a href="/admin/agenda"><button className={!listMode ? 'on' : ''}>Calendrier</button></a><a href="?vue=liste"><button className={listMode ? 'on' : ''}>Liste</button></a></div>
+      {!listMode && <AdminCalendar />}
+
+      {listMode && <div className="grid2">
         <section>
           <div className="bar"><h2>Planning</h2>
             <div className="seg"><a href="?vue=semaine"><button className={horizon === 7 ? 'on' : ''}>7 jours</button></a><a href="?vue=mois"><button className={horizon === 31 ? 'on' : ''}>Mois</button></a></div></div>
@@ -76,7 +81,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ v
             </tbody></table></div>)}
         </section>
         <aside><SessionForm /></aside>
-      </div>
+      </div>}
     </div></main>
   );
 }

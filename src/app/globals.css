@@ -86,3 +86,19 @@ th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)}
 .tabs{display:flex;gap:4px;flex-wrap:wrap;margin:0 0 20px;border-bottom:2px solid var(--black)}
 .tabs a{padding:10px 14px;text-decoration:none;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:#fff;border:1px solid var(--line);border-bottom:0}
 .tabs a.on{background:var(--black);color:var(--yellow);border-color:var(--black)}
+
+/* Calendrier interactif */
+.wg{border:2px solid var(--black);background:#fff;overflow-x:auto}
+.wg-head,.wg-body{display:grid;grid-template-columns:44px repeat(7,minmax(92px,1fr));min-width:700px}
+.wg-head>div{padding:6px 4px;text-align:center;border-bottom:2px solid var(--black);border-left:1px solid var(--line);font-size:11px;text-transform:uppercase;letter-spacing:.06em;display:flex;flex-direction:column;line-height:1.1}
+.wg-head>div b{font-size:18px}.wg-head>div.today{background:var(--yellow)}
+.wg-body{position:relative}
+.wg-axis div{font-size:10px;color:#666;text-align:right;padding-right:4px;border-top:1px solid var(--line);box-sizing:border-box}
+.wg-col{position:relative;border-left:1px solid var(--line);background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 51px,var(--line) 51px,var(--line) 52px)}
+.wg-col.today{background-color:#fffbe0}.wg-col.click{cursor:copy}
+.wg-ev{position:absolute;left:2px;right:2px;overflow:hidden;text-align:left;border:1px solid var(--black);padding:2px 4px;font:inherit;font-size:11px;line-height:1.15;cursor:pointer;background:var(--yellow);color:var(--black)}
+.wg-ev small{display:block;font-size:10px;opacity:.8}
+.wg-ev.pending{background:#fff;border-style:dashed}.wg-ev.full{background:#ddd;color:#555}.wg-ev.group{background:var(--black);color:var(--yellow)}.wg-ev.muted{background:#f3f3f3;color:#888;border-color:#bbb}
+.wg-ev.sel{outline:3px solid var(--black);outline-offset:1px;z-index:2}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal{background:#fff;border:2px solid var(--black);max-width:520px;width:100%;max-height:92vh;overflow:auto;padding:18px}
