@@ -21,3 +21,16 @@ begin
   reset role;
   perform public.t_assert((select value from public.app_settings where key = 'cancel_deadline_hours') = '24', 'sécurité : un joueur ne peut modifier ni créer rien (paramètres intacts)');
 end $t$;
+do $t$
+declare u uuid := gen_random_uuid();
+begin
+  insert into auth.users (id, email) values (u, 'joueur2@sec.fr');
+  perform set_config('request.jwt.claim.sub', u::text, true);
+  set local role authenticated;
+  begin perform public.validate_session(gen_random_uuid(), null, null); raise exception 'devrait échouer'; exception when insufficient_privilege then null; end;
+  begin perform public.renew_cycle(gen_random_uuid(), current_date, 1, null, null, null, null, null, null); raise exception 'devrait échouer'; exception when insufficient_privilege then null; end;
+  begin perform public.record_attendance(gen_random_uuid(), 'present', 'consume', null, null); raise exception 'devrait échouer'; exception when insufficient_privilege then null; end;
+  perform public.t_assert((select count(*) from public.session_revisions) = 0 and (select count(*) from public.operation_requests) = 0, 'sécurité : un joueur ne voit ni révisions ni opérations');
+  reset role;
+  perform public.t_assert(true, 'sécurité : un joueur ne peut ni valider, ni renouveler, ni corriger une présence');
+end $t$;

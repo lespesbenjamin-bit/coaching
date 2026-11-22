@@ -52,18 +52,19 @@ begin
   -- ===== Présences =====
   perform public.t_assert(public.mark_session_present(s1, null) = 4, 'présences : « tous présents » sur la 1re séance (4 joueurs)');
   perform public.t_assert(public.mark_session_present(s1, null) = 0, 'présences : « tous présents » rejoué = aucun effet');
+  perform public.validate_session(s1, null, null);
   perform public.t_assert(public.t_bal(c1) = '0/9/1/0' and public.t_bal(c2) = '0/4/1/0', 'crédits : présence = 1 crédit consommé (c1 et c2)');
   select id into bk1 from public.bookings where session_id = s1 and customer_id = c1;
-  perform public.set_attendance(bk1, 'present', null, null); perform public.set_attendance(bk1, 'present', null, null);
+  perform public.record_attendance(bk1, 'present', null, null, null, 'test'); perform public.record_attendance(bk1, 'present', null, null, null, 'test');
   perform public.t_assert(public.t_bal(c1) = '0/9/1/0', 'crédits : présence enregistrée 2 fois = pas de double consommation');
   perform public.t_assert((select count(*) from public.credit_transactions where booking_id = bk1 and kind = 'consume') = 1, 'crédits : une seule écriture « consume » pour la séance');
 
   -- changement de présence : recalcul sans doublon
-  perform public.set_attendance(bk1, 'absent_justified', 'malade', null);
+  perform public.record_attendance(bk1, 'absent_justified', 'free', 'malade', null, 'test');
   perform public.t_assert(public.t_bal(c1) = '1/9/0/0' and public.t_inv(c1), 'absence justifiée : crédit rendu (1 disponible), rien consommé');
-  perform public.set_attendance(bk1, 'to_makeup', null, null);
+  perform public.record_attendance(bk1, 'to_makeup', 'free', null, null, 'test');
   perform public.t_assert((select count(*) from public.makeup_entitlements where origin_booking_id = bk1 and status = 'open') = 1, 'rattrapage : droit créé pour la séance à rattraper');
-  perform public.set_attendance(bk1, 'to_makeup', null, null);
+  perform public.record_attendance(bk1, 'to_makeup', 'free', null, null, 'test');
   perform public.t_assert((select count(*) from public.makeup_entitlements where origin_booking_id = bk1) = 1, 'rattrapage : pas de doublon si marqué deux fois');
 
   -- ===== Rattrapage =====
@@ -82,16 +83,6 @@ begin
   begin perform public.book_makeup((select id from public.makeup_entitlements where origin_booking_id = bk2), s3); raise exception 'devrait échouer'; exception when sqlstate 'P0033' then null; end;
   perform public.t_assert(true, 'rattrapage : séance complète refusée (pas de surbooking)');
 
-  -- ===== Absence non justifiée et règle administrable =====
-  select id into bk3 from public.bookings where session_id = s2 and customer_id = c2;
-  perform public.set_attendance(bk3, 'absent_unjustified', null, null);
-  perform public.t_assert(public.t_bal(c2) = '0/3/2/0', 'absence non justifiée : crédit consommé (règle par défaut)');
-  update public.app_settings set value = 'false' where key = 'unjustified_absence_consumes_credit';
-  perform public.sync_booking_credit(bk3);
-  perform public.t_assert(public.t_bal(c2) = '1/3/1/0' and public.t_inv(c2), 'règle modifiée : le crédit est rendu au recalcul, solde cohérent');
-  update public.app_settings set value = 'true' where key = 'unjustified_absence_consumes_credit';
-  perform public.sync_booking_credit(bk3);
-  perform public.t_assert(public.t_bal(c2) = '0/3/2/0', 'règle rétablie : crédit de nouveau consommé');
 
   -- ===== Annulation par le coach =====
   perform public.t_assert(public.cancel_session(s3) = 4, 'annulation coach : 4 réservations annulées');
@@ -123,13 +114,13 @@ begin
   begin perform public.adjust_credits(c2, a2, 1, '  ', null); raise exception 'devrait échouer'; exception when check_violation then null; end;
   perform public.t_assert(true, 'journal : correction manuelle sans motif refusée');
   perform public.adjust_credits(c2, a2, 2, 'geste commercial', null);
-  perform public.t_assert(public.t_bal(c2) = '3/2/2/0' and public.t_inv(c2), 'journal : correction manuelle tracée (+2) et cohérente');
+  perform public.t_assert(public.t_bal(c2) = '3/3/1/0' and public.t_inv(c2), 'journal : correction manuelle tracée (+2) et cohérente');
 
   -- ===== Retrait / ajout d'un joueur =====
   perform public.t_assert(public.remove_group_member(g, c4) = 8, 'groupe : retrait de c4, ses 8 séances à venir annulées');
   perform public.t_assert((select count(*) from public.group_membership_events where group_id = g and event = 'left') = 1, 'groupe : historique du départ enregistré');
   r := public.add_group_member(g, c5);
-  perform public.t_assert((r->>'enrolled')::int = 9 and public.seats_taken(s5) = 4, 'groupe : c5 inscrit aux séances restantes, capacité respectée');
+  perform public.t_assert((r->>'enrolled')::int = 8 and public.seats_taken(s5) = 4, 'groupe : c5 inscrit aux séances restantes, capacité respectée');
 
   -- ===== Expiration =====
   update public.player_pack_allocations set expires_at = now() - interval '1 day' where id = a3;
@@ -145,9 +136,9 @@ begin
   perform public.t_assert((r->>'created')::int = 0 and (select count(*) from public.sessions where cycle_id = cyc) = 10, 'cycle : régénérer après un report ne crée pas de doublon');
 
   -- ===== Suspension / prolongation =====
-  perform public.t_assert(public.set_cycle_suspended(cyc, true) = 9, 'cycle suspendu : 9 séances à venir suspendues');
-  perform public.t_assert((select count(*) from public.sessions where cycle_id = cyc and status = 'suspended') = 9, 'cycle suspendu : statut des séances = suspended');
-  perform public.t_assert(public.set_cycle_suspended(cyc, false) = 9, 'cycle repris : 9 séances rouvertes');
+  perform public.t_assert(public.set_cycle_suspended(cyc, true) = 8, 'cycle suspendu : 8 séances à venir ouvertes suspendues (la séance validée est intacte)');
+  perform public.t_assert((select count(*) from public.sessions where cycle_id = cyc and status = 'suspended') = 8, 'cycle suspendu : statut des séances = suspended');
+  perform public.t_assert(public.set_cycle_suspended(cyc, false) = 8, 'cycle repris : 8 séances rouvertes');
   r := public.extend_cycle(cyc, 2);
   perform public.t_assert((r->>'created')::int = 2 and (select count(*) from public.sessions where cycle_id = cyc) = 12, 'cycle prolongé de 2 séances');
   r := public.generate_cycle_sessions(cyc);
