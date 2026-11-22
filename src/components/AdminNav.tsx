@@ -1,8 +1,11 @@
-export default function AdminNav({ current }: { current: 'agenda' | 'joueurs' }) {
+const ITEMS: [string, string, string][] = [
+  ['dashboard', '/admin', 'Tableau de bord'], ['agenda', '/admin/agenda', 'Agenda'], ['groupes', '/admin/groupes', 'Groupes'],
+  ['joueurs', '/admin/joueurs', 'Joueurs'], ['packs', '/admin/packs', 'Packs et crédits'], ['parametres', '/admin/parametres', 'Paramètres'],
+];
+export default function AdminNav({ current }: { current: 'dashboard' | 'agenda' | 'groupes' | 'joueurs' | 'packs' | 'parametres' }) {
   return (
-    <nav className="tabs" aria-label="Administration">
-      <a href="/admin/agenda" className={current === 'agenda' ? 'on' : ''}>Agenda</a>
-      <a href="/admin/joueurs" className={current === 'joueurs' ? 'on' : ''}>Joueurs</a>
+    <nav className="tabs" aria-label="Administration" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+      {ITEMS.map(([k, href, label]) => <a key={k} href={href} className={current === k ? 'on' : ''}>{label}</a>)}
     </nav>
   );
 }

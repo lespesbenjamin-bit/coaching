@@ -37,6 +37,7 @@ export async function POST(req: Request) {
   }
   const row = Array.isArray(data) ? data[0] : data;
   const bookingId: string = row.booking_id;
+  if (row.booking_status === 'confirmed') await supa.rpc('sync_booking_credit', { p_booking: bookingId });
   const status: string = row.booking_status;
 
   // E-mails (n'empêchent jamais la réservation d'aboutir)

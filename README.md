@@ -24,3 +24,10 @@ Site vitrine statique (dans `public/`, URL inchangées) + module de réservation
 
 ## Développement
 `npm install` · `npm run dev` · `npm test` · `npm run build`
+
+## Sprint 2 — back-office (groupes, cycles, packs, crédits)
+
+- Migration `supabase/migrations/003_backoffice.sql` (additive, à exécuter après 001 et 002).
+- Pages admin : `/admin` (tableau de bord), `/admin/agenda`, `/admin/groupes`, `/admin/seances/[id]`, `/admin/joueurs` (+ `fiche/[id]`), `/admin/packs`, `/admin/parametres`.
+- Crédits : journal en ajout seul `credit_transactions` ; solde = somme des mouvements (`v_credit_balance`). Règles (délai d'annulation 24 h par défaut, absence non justifiée, réservation immédiate du crédit) dans `app_settings`.
+- Tests SQL (PostgreSQL jetable, jamais la production) : `tests/sql/run.sh` — 71 vérifications (groupes, cycles, crédits, présences, rattrapages, sécurité, non-régression Sprint 1).

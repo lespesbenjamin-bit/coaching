@@ -31,6 +31,8 @@ export async function POST(req: Request) {
   // mise à jour conditionnelle : évite deux décisions simultanées contradictoires
   const { data: upd } = await supa.from('bookings').update({ status: to }).eq('id', id).eq('status', cur.status).select('id');
   if (!upd?.length) return NextResponse.json({ error: 'La réservation a déjà été modifiée' }, { status: 409 });
+  // crédits : recalcul idempotent (sans effet si le joueur n'a aucun pack). Annulation par le coach = jamais de crédit perdu.
+  await supa.rpc('sync_booking_credit', { p_booking: id });
 
   let emails = 'none';
   if (MAIL[action]) {

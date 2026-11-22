@@ -19,7 +19,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ v
   const now = new Date(); const until = new Date(now.getTime() + horizon * 86400000).toISOString();
 
   const [{ data: sessions }, { data: bookings }] = await Promise.all([
-    supa.from('sessions').select('id,starts_at,ends_at,booking_mode,court_secured,capacity,status,price_per_person_cents,course_types(label,code)')
+    supa.from('sessions').select('id,starts_at,ends_at,booking_mode,court_secured,capacity,status,price_per_person_cents,title,visibility,course_types(label,code)')
       .gte('ends_at', now.toISOString()).lte('starts_at', until).neq('status', 'cancelled').order('starts_at'),
     supa.from('bookings').select('id,status,participants,price_total_cents,comment,admin_note,created_at,session_id,customers(first_name,last_name,email,phone,level),sessions(starts_at,ends_at,course_types(label))')
       .in('status', ['pending', 'confirmed']).order('created_at', { ascending: false }).limit(200),
@@ -60,9 +60,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ v
                 <div style={{ padding: 12, display: 'grid', gap: 8 }}>
                   {list.map((s: any) => { const taken = seats(s.id); return (
                     <div key={s.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                      <span><b>{formatTime(s.starts_at)}–{formatTime(s.ends_at)}</b> · {s.course_types.label} · {taken}/{s.capacity} {s.capacity > 1 ? 'inscrits' : taken ? 'réservé' : 'libre'}
+                      <span><b>{formatTime(s.starts_at)}–{formatTime(s.ends_at)}</b> · {s.title ?? s.course_types.label}{s.visibility === 'group_only' ? ' (groupe)' : ''} · {taken}/{s.capacity} {s.capacity > 1 ? 'inscrits' : taken ? 'réservé' : 'libre'}
                         <br /><span className="muted">{s.booking_mode === 'auto' && s.court_secured ? 'Confirmation auto' : s.booking_mode === 'auto' ? 'Auto (terrain non sécurisé → validation)' : 'Sur validation'} · {euros(s.price_per_person_cents)}/pers.</span></span>
-                      <DeleteSession id={s.id} /></div>); })}
+                      <span className="row-actions"><a className="btn ghost" style={{ padding: '6px 10px', fontSize: 11 }} href={`/admin/seances/${s.id}`}>Détail</a><DeleteSession id={s.id} /></span></div>); })}
                 </div></div>))}</div>)}
 
           <h2 style={{ margin: '24px 0 10px' }}>Réservations confirmées à venir ({upcomingConfirmed.length})</h2>
