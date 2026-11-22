@@ -29,7 +29,7 @@ export async function POST(req: Request) {
   const { error } = await supa.from('sessions').insert(rows);
   if (error) {
     const overlap = error.code === '23P01';
-    return NextResponse.json({ error: overlap ? 'Conflit horaire avec un autre créneau existant.' : 'Erreur serveur' }, { status: overlap ? 409 : 500 });
+    return NextResponse.json({ error: overlap ? 'Conflit avec un autre créneau ou une indisponibilité.' : 'Erreur serveur' }, { status: overlap ? 409 : 500 });
   }
   return NextResponse.json({ ok: true, created: rows.length });
 }

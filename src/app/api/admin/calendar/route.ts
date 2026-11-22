@@ -10,7 +10,9 @@ export async function GET(req: Request) {
   const sp = new URL(req.url).searchParams; const from = sp.get('from'); const to = sp.get('to');
   if (!from || !to || !D.test(from) || !D.test(to)) return NextResponse.json({ error: 'Période invalide' }, { status: 400 });
   const a = new Date(`${from}T00:00:00Z`).getTime() - 86400000; const b = new Date(`${to}T00:00:00Z`).getTime() + 2 * 86400000;
-  const { data, error } = await serviceClient().from('sessions')
+  const supa = serviceClient();
+  const { data: ex } = await supa.from('calendar_exceptions').select('id,starts_at,ends_at,reason').lt('starts_at', new Date(b).toISOString()).gt('ends_at', new Date(a).toISOString()).order('starts_at');
+  const { data, error } = await supa.from('sessions')
     .select('id,starts_at,ends_at,status,capacity,booking_mode,court_secured,visibility,title,group_id,price_per_person_cents,course_types(label,code),bookings(status,participants)')
     .gte('starts_at', new Date(a).toISOString()).lte('starts_at', new Date(b).toISOString()).neq('status', 'cancelled').order('starts_at').limit(600);
   if (error) return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
@@ -20,5 +22,5 @@ export async function GET(req: Request) {
     taken: (s.bookings ?? []).filter((x: any) => ['pending', 'confirmed'].includes(x.status)).reduce((n: number, x: any) => n + x.participants, 0),
     pending: (s.bookings ?? []).filter((x: any) => x.status === 'pending').length,
   }));
-  return NextResponse.json({ sessions });
+  return NextResponse.json({ sessions, unavailabilities: (ex ?? []).map((e: any) => ({ id: e.id, startsAt: e.starts_at, endsAt: e.ends_at, reason: e.reason })) });
 }

@@ -1,12 +1,13 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
 import WeekGrid, { type CalEvent } from '@/components/WeekGrid';
-import { dayKey, formatDay, formatTime, euros } from '@/lib/dates';
+import { dayKey, formatDay, formatTime, euros, parisToUtcIso } from '@/lib/dates';
 
 type S = { id: string; startsAt: string; endsAt: string; status: string; capacity: number; mode: string; secured: boolean; visibility: string; title: string; course: string; price: number; groupId: string | null; taken: number; pending: number };
 const addDays = (key: string, n: number) => { const d = new Date(`${key}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 const mondayOf = (key: string) => addDays(key, -((new Date(`${key}T12:00:00Z`).getUTCDay() + 6) % 7));
 const DEFAULT_CAP: Record<string, number> = { individuel: 1, duo: 2, collectif: 4 };
+type U = { id: string; startsAt: string; endsAt: string; reason: string | null };
 const WD = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
 function tone(s: S): CalEvent['tone'] {
@@ -23,6 +24,11 @@ export default function AdminCalendar() {
   const [sessions, setSessions] = useState<S[]>([]);
   const [err, setErr] = useState('');
   const [sel, setSel] = useState<S | null>(null);
+  const [unavs, setUnavs] = useState<U[]>([]);
+  const [selU, setSelU] = useState<U | null>(null);
+  const [kind, setKind] = useState<'slot' | 'unavail'>('slot');
+  const [allDay, setAllDay] = useState(false);
+  const [warn, setWarn] = useState<{ count: number; booked: number } | null>(null);
   const [create, setCreate] = useState<{ date: string; time: string } | null>(null);
   const [course, setCourse] = useState('individuel');
   const [busy, setBusy] = useState(false); const [formErr, setFormErr] = useState('');
@@ -32,17 +38,41 @@ export default function AdminCalendar() {
   const load = useCallback(async () => {
     const r = await fetch(`/api/admin/calendar?from=${range[0]}&to=${range[1]}`, { cache: 'no-store' });
     if (!r.ok) { setErr('Impossible de charger le calendrier.'); return; }
-    setErr(''); setSessions((await r.json()).sessions);
+    setErr(''); const j = await r.json(); setSessions(j.sessions); setUnavs(j.unavailabilities ?? []);
   }, [range[0], range[1]]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { load(); }, [load]);
 
   const shift = (n: number) => view === 'week' ? setAnchor(addDays(anchor, 7 * n)) : setAnchor(addDays(monthFirst, n > 0 ? 32 : -1).slice(0, 8) + '01');
-  const events: CalEvent[] = sessions.map(s => ({ id: s.id, startsAt: s.startsAt, endsAt: s.endsAt, title: s.title, sub: `${s.taken}/${s.capacity}${s.pending ? ` · ${s.pending} à valider` : ''}`, tone: tone(s) }));
+  const uEvents: CalEvent[] = unavs.flatMap(u => {
+    // une indisponibilité sur plusieurs jours est découpée par jour pour la grille
+    const out: CalEvent[] = []; let d = dayKey(u.startsAt); const last = dayKey(new Date(new Date(u.endsAt).getTime() - 1).toISOString());
+    for (let i = 0; i < 60 && d <= last; i++, d = addDays(d, 1)) {
+      const st = i === 0 ? u.startsAt : parisToUtcIso(d, '00:00'); const en = d === last ? u.endsAt : parisToUtcIso(addDays(d, 1), '00:00');
+      out.push({ id: `u:${u.id}:${d}`, startsAt: st, endsAt: en, title: 'Indisponible', sub: u.reason ?? undefined, tone: 'muted' });
+    }
+    return out;
+  });
+  const events: CalEvent[] = [...uEvents, ...sessions.map(s => ({ id: s.id, startsAt: s.startsAt, endsAt: s.endsAt, title: s.title, sub: `${s.taken}/${s.capacity}${s.pending ? ` · ${s.pending} à valider` : ''}`, tone: tone(s) }))];
   const byDay = sessions.reduce<Record<string, S[]>>((a, s) => { (a[dayKey(s.startsAt)] ??= []).push(s); return a; }, {});
   const cells = Array.from({ length: 42 }, (_, i) => addDays(mondayOf(monthFirst), i));
 
+  async function submitUnavail(f: FormData, force: boolean) {
+    setBusy(true); setFormErr('');
+    const r = await fetch('/api/admin/unavailability', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+      startDate: f.get('sdate'), startTime: f.get('stime') || '00:00', endDate: f.get('edate'), endTime: f.get('etime') || '00:00', allDay: f.get('allday') === 'on', reason: f.get('reason') || undefined, force }) });
+    const j = await r.json(); setBusy(false);
+    if (r.status === 409 && j.error === 'conflict') { setWarn({ count: j.count, booked: j.booked }); return; }
+    if (!r.ok) { setFormErr(j.error ?? 'Erreur'); return; }
+    setCreate(null); setWarn(null); load();
+  }
+  async function removeUnavail(id: string) {
+    if (!confirm('Supprimer cette indisponibilité ?')) return;
+    await fetch(`/api/admin/unavailability?id=${id}`, { method: 'DELETE' }); setSelU(null); load();
+  }
   async function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault(); const f = new FormData(e.currentTarget); setBusy(true); setFormErr('');
+    e.preventDefault(); const f = new FormData(e.currentTarget);
+    if (kind === 'unavail') { const force = (e.nativeEvent as SubmitEvent).submitter?.getAttribute('data-force') === '1'; return submitUnavail(f, force); }
+    setBusy(true); setFormErr('');
     const price = String(f.get('price') ?? '').trim();
     const r = await fetch('/api/admin/sessions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
       courseCode: f.get('course'), date: f.get('date'), time: f.get('time'), durationMin: Number(f.get('duration')), bookingMode: f.get('mode'),
@@ -61,16 +91,16 @@ export default function AdminCalendar() {
         <b className="cap">{view === 'week' ? `Semaine du ${formatDay(`${weekStart}T12:00:00Z`)}` : new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${monthFirst}T12:00:00Z`))}</b>
         <div className="seg"><button className={view === 'week' ? 'on' : ''} onClick={() => setView('week')}>Semaine</button><button className={view === 'month' ? 'on' : ''} onClick={() => setView('month')}>Mois</button></div>
       </div>
-      <div className="legend" style={{ marginBottom: 8 }}><span><i style={{ background: 'var(--yellow)' }} />Libre</span><span><i style={{ borderStyle: 'dashed' }} />Demande à valider</span><span><i style={{ background: '#ddd' }} />Complet</span><span><i style={{ background: 'var(--black)' }} />Groupe</span></div>
-      <p className="muted" style={{ margin: '0 0 8px' }}>{view === 'week' ? 'Cliquez sur une zone vide pour créer un créneau, ou sur un créneau pour le gérer.' : 'Cliquez sur un jour pour l’ouvrir en vue semaine.'}</p>
+      <div className="legend" style={{ marginBottom: 8 }}><span><i style={{ background: 'var(--yellow)' }} />Libre</span><span><i style={{ borderStyle: 'dashed' }} />Demande à valider</span><span><i style={{ background: '#ddd' }} />Complet</span><span><i style={{ background: 'var(--black)' }} />Groupe</span><span><i style={{ background: '#f3f3f3', borderColor: '#bbb' }} />Indisponible</span></div>
+      <p className="muted" style={{ margin: '0 0 8px' }}>{view === 'week' ? 'Cliquez sur une zone vide pour créer un créneau ou une indisponibilité, ou sur un élément pour le gérer.' : 'Cliquez sur un jour pour l’ouvrir en vue semaine.'}</p>
       {err && <div className="notice bad">{err}</div>}
 
-      {view === 'week' ? <WeekGrid weekStart={weekStart} events={events} selectedId={sel?.id} onEvent={e => setSel(sessions.find(s => s.id === e.id) ?? null)} onEmpty={(date, time) => { setCourse('individuel'); setFormErr(''); setCreate({ date, time }); }} /> : (
+      {view === 'week' ? <WeekGrid weekStart={weekStart} events={events} selectedId={sel?.id} onEvent={e => { if (e.id.startsWith('u:')) setSelU(unavs.find(u => u.id === e.id.split(':')[1]) ?? null); else setSel(sessions.find(s => s.id === e.id) ?? null); }} onEmpty={(date, time) => { setCourse('individuel'); setKind('slot'); setAllDay(false); setWarn(null); setFormErr(''); setCreate({ date, time }); }} /> : (
         <div className="month">
           {WD.map(w => <div key={w} className="h">{w}</div>)}
           {cells.map(d => { const l = byDay[d] ?? []; const other = d.slice(0, 7) !== monthFirst.slice(0, 7); return (
             <button key={d} className="cell" style={other ? { opacity: .45 } : undefined} onClick={() => { setAnchor(d); setView('week'); }}>
-              <b>{+d.slice(8)}</b>{l.length > 0 && <em>{l.length} créneau{l.length > 1 ? 'x' : ''}{l.some(s => s.pending) ? ' • à valider' : ''}</em>}
+              <b>{+d.slice(8)}</b>{l.length > 0 && <em>{l.length} créneau{l.length > 1 ? 'x' : ''}{l.some(s => s.pending) ? ' • à valider' : ''}</em>}{unavs.some(u => dayKey(u.startsAt) <= d && d <= dayKey(new Date(new Date(u.endsAt).getTime() - 1).toISOString())) && <em style={{ color: 'var(--bad)' }}>Indisponible</em>}
             </button>); })}
         </div>)}
 
@@ -85,10 +115,29 @@ export default function AdminCalendar() {
             <button className="btn ghost" onClick={() => setSel(null)}>Fermer</button></div>
         </div></div>)}
 
+      {selU && (
+        <div className="modal-bg" onClick={() => setSelU(null)}><div className="modal" onClick={e => e.stopPropagation()}>
+          <h2 style={{ marginBottom: 6 }}>Indisponibilité</h2>
+          <p className="muted"><span className="cap">{formatDay(selU.startsAt)}</span> {formatTime(selU.startsAt)} → <span className="cap">{formatDay(selU.endsAt)}</span> {formatTime(selU.endsAt)}</p>
+          {selU.reason && <p>{selU.reason}</p>}
+          <div className="row-actions" style={{ marginTop: 12 }}><button className="btn danger" onClick={() => removeUnavail(selU.id)}>Supprimer</button><button className="btn ghost" onClick={() => setSelU(null)}>Fermer</button></div>
+        </div></div>)}
+
       {create && (
         <div className="modal-bg" onClick={() => setCreate(null)}><div className="modal" onClick={e => e.stopPropagation()}>
           <form className="form" onSubmit={submit}>
-            <h2 className="full">Nouveau créneau</h2>
+            <div className="seg full"><button type="button" className={kind === 'slot' ? 'on' : ''} onClick={() => { setKind('slot'); setWarn(null); }}>Créneau</button><button type="button" className={kind === 'unavail' ? 'on' : ''} onClick={() => setKind('unavail')}>Indisponibilité</button></div>
+            {kind === 'unavail' ? <>
+              <label>Du<input name="sdate" type="date" defaultValue={create.date} required /></label>
+              <label>Heure de début<input name="stime" type="time" step={900} defaultValue={create.time} disabled={allDay} /></label>
+              <label>Au<input name="edate" type="date" defaultValue={create.date} required /></label>
+              <label>Heure de fin<input name="etime" type="time" step={900} defaultValue={String(Math.min(23, +create.time.slice(0, 2) + 1)).padStart(2, '0') + create.time.slice(2)} disabled={allDay} /></label>
+              <label className="full" style={{ display: 'flex', gap: 8 }}><input type="checkbox" name="allday" checked={allDay} onChange={e => setAllDay(e.target.checked)} style={{ width: 'auto' }} />Journée(s) entière(s)</label>
+              <label className="full">Motif (visible par vous seul)<input name="reason" maxLength={120} placeholder="Vacances, tournoi, rendez-vous…" /></label>
+              {warn && <div className="notice warn full">{warn.count} séance(s) déjà planifiée(s) sur cette plage{warn.booked > 0 ? `, dont ${warn.booked} avec des inscrits` : ''}. Elles ne seront <b>pas annulées</b> : gérez-les depuis l’agenda. Les créneaux libres concernés disparaîtront de la réservation.</div>}
+              {formErr && <div className="notice bad full">{formErr}</div>}
+              <div className="full row-actions">{warn ? <button className="btn" data-force="1" disabled={busy}>Créer quand même</button> : <button className="btn" disabled={busy}>{busy ? '…' : 'Ajouter l’indisponibilité'}</button>}<button type="button" className="btn ghost" onClick={() => setCreate(null)}>Annuler</button></div>
+            </> : <>
             <label>Cours<select name="course" value={course} onChange={e => setCourse(e.target.value)}><option value="individuel">Individuel</option><option value="duo">Duo</option><option value="collectif">Collectif</option></select></label>
             <label>Date<input name="date" type="date" defaultValue={create.date} required /></label>
             <label>Heure (Paris)<input name="time" type="time" step={900} defaultValue={create.time} required /></label>
@@ -100,6 +149,7 @@ export default function AdminCalendar() {
             <label className="full" style={{ display: 'flex', gap: 8 }}><input type="checkbox" name="secured" style={{ width: 'auto' }} />Terrain déjà réservé et sécurisé (requis pour la confirmation automatique)</label>
             {formErr && <div className="notice bad full">{formErr}</div>}
             <div className="full row-actions"><button className="btn" disabled={busy}>{busy ? '…' : 'Créer'}</button><button type="button" className="btn ghost" onClick={() => setCreate(null)}>Annuler</button></div>
+            </>}
           </form>
         </div></div>)}
     </div>
