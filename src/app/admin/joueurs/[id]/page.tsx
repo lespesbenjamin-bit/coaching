@@ -2,6 +2,7 @@ import { redirect, notFound } from 'next/navigation';
 import { z } from 'zod';
 import { getAdminUser } from '@/lib/auth';
 import { serviceClient } from '@/lib/supabase/admin';
+import { PART_STATUS } from '@/lib/tournois';
 import AdminNav from '@/components/AdminNav';
 import ConfirmButton from '@/components/ConfirmButton';
 import { addReport, toggleReport, deleteReport, addCoachGoal, setCoachGoalStatus, addProgress, commentTournament } from '../actions';
@@ -22,7 +23,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     svc.from('session_reports').select('*').eq('player_id', id).order('session_date', { ascending: false }),
     svc.from('goals').select('*').eq('player_id', id).order('created_at', { ascending: false }),
     svc.from('progress_entries').select('*').eq('player_id', id).order('entered_on', { ascending: false }),
-    svc.from('tournaments').select('*').eq('player_id', id).order('tournament_date', { ascending: false }),
+    svc.from('tournament_participations').select('id,status,partner_name,player_objective,result_text,player_feedback,coach_comment,customers!tournament_participations_customer_id_fkey!inner(user_id),tournament_events(id,name,start_date,category_code)').eq('customers.user_id', id),
   ]);
   const name = [p.first_name, p.last_name].filter(Boolean).join(' ') || 'Joueur';
 
@@ -89,10 +90,10 @@ export default async function Page({ params, searchParams }: { params: Promise<{
       </div>
 
       <h2 style={{ margin: '28px 0 10px' }}>Tournois du joueur</h2>
-      {!tournaments.data?.length ? <div className="panel empty">Aucun tournoi renseigné.</div> : <div className="days">{tournaments.data.map(t => (
-        <div className="panel" key={t.id}><b>{t.name}</b> <span className="muted">· {dshort(t.tournament_date)}{t.category ? ` · ${t.category}` : ''}{t.partner ? ` · avec ${t.partner}` : ''}</span>
-          {t.objective && <p className="muted" style={{ margin: '6px 0' }}>Objectif : {t.objective}</p>}
-          <p style={{ margin: '6px 0' }}><b>Résultat :</b> {t.result ?? '—'}<br /><b>Ressenti :</b> <span style={{ whiteSpace: 'pre-wrap' }}>{t.feedback ?? '—'}</span></p>
+      {!tournaments.data?.length ? <div className="panel empty">Aucun tournoi renseigné.</div> : <div className="days">{(tournaments.data as any[]).map(t => (
+        <div className="panel" key={t.id}><b><a href={`/admin/tournois/${t.tournament_events.id}`}>{t.tournament_events.name}</a></b> <span className="muted">· {dshort(t.tournament_events.start_date)}{t.tournament_events.category_code ? ` · ${t.tournament_events.category_code}` : ''}{t.partner_name ? ` · avec ${t.partner_name}` : ''} · {PART_STATUS[t.status]}</span>
+          {t.player_objective && <p className="muted" style={{ margin: '6px 0' }}>Objectif : {t.player_objective}</p>}
+          <p style={{ margin: '6px 0' }}><b>Résultat déclaré :</b> {t.result_text ?? '—'}<br /><b>Ressenti :</b> <span style={{ whiteSpace: 'pre-wrap' }}>{t.player_feedback ?? '—'}</span></p>
           <form action={commentTournament} className="form" style={{ gridTemplateColumns: '1fr' }}><input type="hidden" name="id" value={t.id} /><input type="hidden" name="pid" value={id} />
             <label>Votre commentaire (visible par le joueur)<textarea name="comment" rows={2} maxLength={1500} defaultValue={t.coach_comment ?? ''} /></label>
             <div className="row-actions"><button className="btn ghost">Enregistrer</button></div></form></div>))}</div>}

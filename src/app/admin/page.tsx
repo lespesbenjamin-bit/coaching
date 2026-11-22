@@ -10,7 +10,8 @@ export const metadata = { title: 'Tableau de bord — administration', robots: {
 export default async function Page() {
   if (!(await getAdminUser())) redirect('/admin/login');
   const svc = serviceClient(); const now = new Date(); const in7 = new Date(now.getTime() + 7 * 86400000).toISOString(); const iso = now.toISOString();
-  const [pend, week, groups, lowRows, noAtt, makeups, exp] = await Promise.all([
+  const in14 = new Date(now.getTime() + 14 * 86400000).toISOString().slice(0, 10); const todayD = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(now);
+  const [pend, week, groups, lowRows, noAtt, makeups, exp, tourn, toConfirm, proposedEv] = await Promise.all([
     svc.from('bookings').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
     svc.from('sessions').select('id,starts_at,title,capacity,course_types(label),group_id', { count: 'exact' }).gte('starts_at', iso).lte('starts_at', in7).in('status', ['open']).order('starts_at').limit(12),
     svc.from('groups').select('id', { count: 'exact', head: true }).eq('status', 'active'),
@@ -18,6 +19,9 @@ export default async function Page() {
     svc.from('sessions').select('id,starts_at,title,course_types(label)').lt('ends_at', iso).eq('status', 'open').order('starts_at', { ascending: false }).limit(40),
     svc.from('makeup_entitlements').select('id,customers(first_name,last_name)').eq('status', 'open'),
     svc.from('player_pack_allocations').select('id,name,expires_at,customers(first_name,last_name)').eq('status', 'active').gt('expires_at', iso).lte('expires_at', new Date(now.getTime() + 30 * 86400000).toISOString()),
+    svc.from('tournament_events').select('id,name,start_date,category_code,tournament_participations(status)').gte('start_date', todayD).lte('start_date', in14).neq('status', 'cancelled').order('start_date'),
+    svc.from('tournament_participations').select('id', { count: 'exact', head: true }).in('status', ['planned', 'declared']),
+    svc.from('tournament_events').select('id', { count: 'exact', head: true }).eq('publication', 'proposed'),
   ]);
   // séances passées dont des réservations confirmées n'ont aucune présence saisie
   const pastIds = (noAtt.data ?? []).map((s: any) => s.id);
@@ -38,6 +42,9 @@ export default async function Page() {
         <Card n={groups.count ?? 0} label="Groupes actifs" href="/admin/groupes" />
         <Card n={toMarkList.length} label="Présences à saisir" href="/admin/agenda" />
         <Card n={makeups.data?.length ?? 0} label="Rattrapages en attente" href="/admin/joueurs" />
+        <Card n={tourn.data?.length ?? 0} label="Tournois sous 14 jours" href="/admin/tournois" />
+        <Card n={toConfirm.count ?? 0} label="Inscriptions à vérifier" href="/admin/tournois?statut=declared" />
+        <Card n={proposedEv.count ?? 0} label="Tournois à valider" href="/admin/tournois?vue=tableau" />
       </div>
       <div className="grid2">
         <section><h2 style={{ marginBottom: 10 }}>Prochaines séances</h2>
@@ -47,7 +54,10 @@ export default async function Page() {
           {toMarkList.length === 0 ? <div className="panel empty">Tout est à jour.</div> : <div className="panel scroll"><table><tbody>
             {toMarkList.slice(0, 10).map((s: any) => <tr key={s.id}><td><span className="cap">{formatDay(s.starts_at)}</span> · {formatTime(s.starts_at)}</td><td>{s.title ?? s.course_types?.label}</td><td><a href={`/admin/seances/${s.id}`}>Saisir</a></td></tr>)}</tbody></table></div>}
         </section>
-        <aside><h2 style={{ marginBottom: 10 }}>Crédits à surveiller</h2>
+        <aside><h2 style={{ marginBottom: 10 }}>Tournois à 14 jours</h2>
+          {(tourn.data ?? []).length === 0 ? <div className="panel empty">Aucun tournoi dans les 14 jours.</div> : <div className="panel scroll"><table><tbody>
+            {(tourn.data as any[]).map(t => { const n = (t.tournament_participations ?? []).filter((p: any) => p.status !== 'cancelled').length; return <tr key={t.id}><td>{new Date(t.start_date + 'T12:00:00Z').toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', timeZone: 'UTC' })}</td><td><a href={`/admin/tournois/${t.id}`}>{t.category_code ? `${t.category_code} · ` : ''}{t.name}</a></td><td>{n} joueur{n > 1 ? 's' : ''}</td></tr>; })}</tbody></table></div>}
+          <h2 style={{ margin: '22px 0 10px' }}>Crédits à surveiller</h2>
           {(lowRows.data ?? []).length === 0 ? <div className="panel empty">Aucun joueur avec 1 crédit ou moins.</div> : <div className="panel scroll"><table><tbody>
             {(lowRows.data as any[]).map(r => <tr key={r.customer_id}><td>{nameOf.get(r.customer_id)}</td><td>{r.available} dispo · {r.reserved} réservé(s)</td><td><a href={`/admin/joueurs/fiche/${r.customer_id}`}>Fiche</a></td></tr>)}</tbody></table></div>}
           <h2 style={{ margin: '22px 0 10px' }}>Packs bientôt expirés (30 j)</h2>

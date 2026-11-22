@@ -3,6 +3,7 @@ import { getAdminUser } from '@/lib/auth';
 import { serviceClient } from '@/lib/supabase/admin';
 import { formatDay, formatTime, euros } from '@/lib/dates';
 import { ATTENDANCE_LABELS } from '@/lib/backoffice';
+import { PART_STATUS } from '@/lib/tournois';
 import AdminNav from '@/components/AdminNav';
 import Flash from '@/components/Flash';
 import { grantPack, adjustCredits, bookMakeup } from '../../../actions';
@@ -18,7 +19,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const svc = serviceClient(); const iso = new Date().toISOString();
   const { data: c } = await svc.from('customers').select('*').eq('id', id).maybeSingle();
   if (!c) notFound();
-  const [{ data: bal }, { data: allocs }, { data: tx }, { data: bks }, { data: groups }, { data: packs }, { data: mk }, { data: future }] = await Promise.all([
+  const [{ data: bal }, { data: allocs }, { data: tx }, { data: bks }, { data: groups }, { data: packs }, { data: mk }, { data: future }, { data: tparts }] = await Promise.all([
     svc.from('v_credit_balance').select('*').eq('customer_id', id).maybeSingle(),
     svc.from('player_pack_allocations').select('*').eq('customer_id', id).order('granted_at', { ascending: false }),
     svc.from('credit_transactions').select('id,kind,d_available,reason,created_at,player_pack_allocations(name)').eq('customer_id', id).order('created_at', { ascending: false }).limit(40),
@@ -27,6 +28,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     svc.from('pack_definitions').select('id,name,credits,price_cents').eq('active', true).order('credits'),
     svc.from('makeup_entitlements').select('id,status,created_at,bookings!makeup_entitlements_origin_booking_id_fkey(sessions(starts_at,course_type_id,course_types(label)))').eq('customer_id', id).order('created_at', { ascending: false }),
     svc.from('sessions').select('id,starts_at,course_type_id,course_types(label)').eq('status', 'open').gt('starts_at', iso).order('starts_at').limit(60),
+    svc.from('tournament_participations').select('id,status,partner_name,result_text,tournament_events(id,name,start_date,category_code)').eq('customer_id', id).order('created_at', { ascending: false }),
   ]);
   const to = `/admin/joueurs/fiche/${id}`;
   const att = (b: any) => Array.isArray(b.attendance_records) ? b.attendance_records[0] : b.attendance_records;
@@ -56,6 +58,9 @@ export default async function Page({ params, searchParams }: { params: Promise<{
               {m.status === 'open' && <form action={bookMakeup} className="row-actions" style={{ marginTop: 8 }}><input type="hidden" name="entitlement" value={m.id} /><input type="hidden" name="back" value={to} />
                 <select name="session" required defaultValue=""><option value="" disabled>Choisir une séance…</option>{opts.map(s => <option key={s.id} value={s.id}>{formatDay(s.starts_at)} {formatTime(s.starts_at)}</option>)}</select><button className="btn">Réserver</button></form>}
             </div>); })}
+          <h2 style={{ margin: '22px 0 10px' }}>Tournois</h2>
+          {(tparts ?? []).length === 0 ? <div className="panel empty">Aucun tournoi.</div> : <div className="panel scroll"><table><tbody>
+            {((tparts ?? []) as any[]).map(t => <tr key={t.id}><td><a href={`/admin/tournois/${t.tournament_events.id}`}>{t.tournament_events.name}</a><br /><span className="muted">{t.tournament_events.category_code ?? ''}{t.partner_name ? ` · avec ${t.partner_name}` : ''}{t.result_text ? ` · ${t.result_text}` : ''}</span></td><td>{PART_STATUS[t.status]}</td><td>{new Date(t.tournament_events.start_date + 'T12:00:00Z').toLocaleDateString('fr-FR', { timeZone: 'UTC' })}</td></tr>)}</tbody></table></div>}
           <h2 style={{ margin: '22px 0 10px' }}>Groupes</h2>
           {(groups ?? []).length === 0 ? <div className="panel empty">Aucun groupe.</div> : <div className="panel scroll"><table><tbody>
             {((groups ?? []) as any[]).map((g, i) => <tr key={i}><td><a href={`/admin/groupes/${g.groups?.id}`}>{g.groups?.name}</a></td><td>{g.status === 'active' ? 'Membre actuel' : 'Parti'}</td><td>{new Date(g.joined_at).toLocaleDateString('fr-FR')}{g.left_at && ` → ${new Date(g.left_at).toLocaleDateString('fr-FR')}`}</td></tr>)}</tbody></table></div>}

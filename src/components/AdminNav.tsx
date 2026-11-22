@@ -1,11 +1,14 @@
-const ITEMS: [string, string, string][] = [
-  ['dashboard', '/admin', 'Tableau de bord'], ['agenda', '/admin/agenda', 'Agenda'], ['groupes', '/admin/groupes', 'Groupes'],
-  ['joueurs', '/admin/joueurs', 'Joueurs'], ['packs', '/admin/packs', 'Packs et crédits'], ['parametres', '/admin/parametres', 'Paramètres'],
+import Sidebar, { type NavItem } from './Sidebar';
+
+export const ADMIN_ITEMS: NavItem[] = [
+  { key: 'dashboard', href: '/admin', label: 'Tableau de bord' },
+  { key: 'agenda', href: '/admin/agenda', label: 'Agenda' },
+  { key: 'groupes', href: '/admin/groupes', label: 'Groupes' },
+  { key: 'joueurs', href: '/admin/joueurs', label: 'Joueurs' },
+  { key: 'tournois', href: '/admin/tournois', label: 'Tournois' },
+  { key: 'packs', href: '/admin/packs', label: 'Packs et crédits' },
+  { key: 'parametres', href: '/admin/parametres', label: 'Paramètres' },
 ];
-export default function AdminNav({ current }: { current: 'dashboard' | 'agenda' | 'groupes' | 'joueurs' | 'packs' | 'parametres' }) {
-  return (
-    <nav className="tabs" aria-label="Administration" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
-      {ITEMS.map(([k, href, label]) => <a key={k} href={href} className={current === k ? 'on' : ''}>{label}</a>)}
-    </nav>
-  );
+export default function AdminNav({ current }: { current: 'dashboard' | 'agenda' | 'groupes' | 'joueurs' | 'tournois' | 'packs' | 'parametres' }) {
+  return <Sidebar title="Espace coach" items={ADMIN_ITEMS} current={current} footer={<a href="/mon-espace">Espace joueur</a>} />;
 }

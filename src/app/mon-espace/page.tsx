@@ -5,15 +5,17 @@ import { getAdminUser } from '@/lib/auth';
 import { formatDay, formatTime, euros } from '@/lib/dates';
 import { STATUS_LABELS, type BookingStatus } from '@/lib/booking-rules';
 import ConfirmButton from '@/components/ConfirmButton';
+import Sidebar from '@/components/Sidebar';
+import Tournois from './Tournois';
 import { saveProfile, addGoal, setGoalStatus, deleteGoal, addTournament, updateTournament, deleteTournament, signOut, deleteAccount } from './actions';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Mon espace joueur', robots: { index: false, follow: false } };
 
-const TABS = [['seances', 'Séances'], ['rapports', 'Comptes rendus'], ['objectifs', 'Objectifs'], ['progression', 'Progression'], ['tournois', 'Tournois'], ['profil', 'Profil']] as const;
+const TABS = [['seances', 'Séances'], ['rapports', 'Comptes rendus'], ['objectifs', 'Objectifs'], ['progression', 'Progression'], ['tournois', 'Mes tournois'], ['profil', 'Profil']] as const;
 const dshort = (d: string) => new Intl.DateTimeFormat('fr-FR', { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${d}T12:00:00Z`));
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ tab?: string; ok?: string; err?: string }> }) {
+export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const sp = await searchParams;
   const supa = await sessionClient();
   const { data: auth } = await supa.auth.getUser();
@@ -40,18 +42,18 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
         </div>
       </div></section>
       <main className="main"><div className="wrap">
-        {sp.ok && <div className="notice ok">Enregistré.</div>}
+        {sp.ok && tab !== 'tournois' && <div className="notice ok">Enregistré.</div>}
         {sp.err === 'champs' && <div className="notice bad">Merci de vérifier les champs saisis.</div>}
         {sp.err === 'consentement' && <div className="notice bad">Pour continuer, confirmez que vous avez 18 ans ou plus et acceptez le traitement de vos données.</div>}
         {sp.err === 'confirmation' && <div className="notice bad">Tapez exactement SUPPRIMER pour confirmer.</div>}
-        {!incomplete && <nav className="tabs" aria-label="Sections">{TABS.map(([k, l]) => <a key={k} href={`?tab=${k}`} className={tab === k ? 'on' : ''}>{l}</a>)}</nav>}
+        {!incomplete && <Sidebar title="Espace joueur" items={TABS.map(([k, l]) => ({ key: k, href: `?tab=${k}`, label: l }))} current={tab} footer={<a href="/reservation">Réserver un cours</a>} />}
         {incomplete && <div className="notice warn">Complétez votre profil pour accéder à votre espace.</div>}
 
         {tab === 'seances' && await Seances(user.id)}
         {tab === 'rapports' && await Rapports(supa)}
         {tab === 'objectifs' && await Objectifs(supa)}
         {tab === 'progression' && await Progression(supa)}
-        {tab === 'tournois' && await Tournois(supa)}
+        {tab === 'tournois' && await Tournois({ supa, userId: user.id, sp: sp as Record<string, string | undefined> })}
         {tab === 'profil' && <Profil p={profile} email={user.email ?? ''} incomplete={incomplete} />}
       </div></main>
     </>
@@ -115,32 +117,6 @@ async function Progression(supa: Awaited<ReturnType<typeof sessionClient>>) {
   if (!data?.length) return <div className="panel empty">Votre coach renseignera ici l’évolution de votre niveau.</div>;
   return <div className="panel scroll"><table><thead><tr><th>Date</th><th>Niveau</th><th>Points</th><th>Note du coach</th></tr></thead><tbody>
     {data.map(e => <tr key={e.id}><td>{dshort(e.entered_on)}</td><td>{e.level_label ?? '—'}</td><td>{e.ranking_points ?? '—'}</td><td>{e.note ?? ''}</td></tr>)}</tbody></table></div>;
-}
-
-async function Tournois(supa: Awaited<ReturnType<typeof sessionClient>>) {
-  const { data } = await supa.from('tournaments').select('*').order('tournament_date', { ascending: false });
-  return <div className="grid2">
-    <section>{!data?.length ? <div className="panel empty">Ajoutez vos tournois pour suivre vos résultats avec votre coach.</div> : <div className="days">{data.map(t => (
-      <div className="panel" key={t.id}>
-        <b>{t.name}</b> <span className="muted">· {dshort(t.tournament_date)}{t.category ? ` · ${t.category}` : ''}{t.city ? ` · ${t.city}` : ''}{t.partner ? ` · avec ${t.partner}` : ''}</span>
-        {t.objective && <p className="muted" style={{ margin: '6px 0' }}>Objectif : {t.objective}</p>}
-        {t.coach_comment && <div className="notice ok" style={{ margin: '8px 0' }}><b>Commentaire du coach</b><br />{t.coach_comment}</div>}
-        <form action={updateTournament} className="form" style={{ gridTemplateColumns: '1fr', marginTop: 8 }}>
-          <input type="hidden" name="id" value={t.id} />
-          <label>Résultat<input name="result" defaultValue={t.result ?? ''} maxLength={120} placeholder="ex. Demi-finale" /></label>
-          <label>Mon ressenti<textarea name="feedback" rows={3} maxLength={1500} defaultValue={t.feedback ?? ''} /></label>
-          <div className="row-actions"><button className="btn ghost">Enregistrer</button></div></form>
-        <form action={deleteTournament} style={{ marginTop: 8 }}><input type="hidden" name="id" value={t.id} /><ConfirmButton message="Supprimer ce tournoi ?">Supprimer</ConfirmButton></form>
-      </div>))}</div>}</section>
-    <aside><form action={addTournament} className="panel form" style={{ gridTemplateColumns: '1fr' }}>
-      <h2 style={{ fontSize: 18 }}>Ajouter un tournoi</h2>
-      <label>Nom<input name="name" required maxLength={120} /></label>
-      <label>Date<input name="date" type="date" required /></label>
-      <label>Catégorie<input name="category" maxLength={20} placeholder="ex. P250" /></label>
-      <label>Ville<input name="city" maxLength={60} /></label>
-      <label>Partenaire<input name="partner" maxLength={80} /></label>
-      <label>Mon objectif<textarea name="objective" rows={2} maxLength={500} /></label>
-      <button className="btn">Ajouter</button></form></aside></div>;
 }
 
 function Profil({ p, email, incomplete }: { p: any; email: string; incomplete: boolean }) {

@@ -4,6 +4,7 @@ import { serviceClient } from '@/lib/supabase/admin';
 import AdminNav from '@/components/AdminNav';
 import Flash from '@/components/Flash';
 import { saveSettings } from '../actions';
+import { addRef, toggleRef } from '../tournois/actions';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Paramètres — administration', robots: { index: false, follow: false } };
@@ -11,7 +12,8 @@ export const metadata = { title: 'Paramètres — administration', robots: { ind
 export default async function Page({ searchParams }: { searchParams: Promise<{ ok?: string; err?: string }> }) {
   if (!(await getAdminUser())) redirect('/admin/login');
   const sp = await searchParams;
-  const { data } = await serviceClient().from('app_settings').select('key,value');
+  const svc = serviceClient(); const { data } = await svc.from('app_settings').select('key,value');
+  const [{ data: cats }, { data: fmts }] = await Promise.all([svc.from('tournament_categories').select('*').order('sort_order'), svc.from('tournament_formats').select('*').order('sort_order')]);
   const s = Object.fromEntries(((data ?? []) as any[]).map(r => [r.key, r.value]));
   const on = (k: string, d: boolean) => (s[k] ?? d) === true;
   return (
@@ -28,6 +30,14 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ o
         <button className="btn full">Enregistrer</button>
         <p className="muted full">Une absence justifiée, une annulation par le coach ou une séance annulée ne consomment jamais de crédit. Les changements s’appliquent aux prochains calculs ; l’historique du journal n’est jamais réécrit.</p>
       </form>
+      {[['tournament_categories', 'Catégories de tournois', cats], ['tournament_formats', 'Épreuves (sexe / catégorie d’épreuve)', fmts]].map(([table, title, rows]: any) => (
+        <section key={table} className="panel" style={{ padding: 20, maxWidth: 640, marginTop: 18 }}>
+          <h3 style={{ marginTop: 0 }}>{title}</h3>
+          <table><tbody>{(rows ?? []).map((r: any) => <tr key={r.code}><td><b>{r.code}</b></td><td>{r.label}</td><td>{r.active ? 'Actif' : 'Inactif'}</td>
+            <td><form action={toggleRef}><input type="hidden" name="table" value={table} /><input type="hidden" name="code" value={r.code} /><input type="hidden" name="to" value={r.active ? '0' : '1'} /><button className="btn ghost" style={{ padding: '4px 8px', fontSize: 11 }}>{r.active ? 'Désactiver' : 'Activer'}</button></form></td></tr>)}</tbody></table>
+          <form action={addRef} className="row-actions" style={{ marginTop: 10 }}><input type="hidden" name="table" value={table} /><input name="code" placeholder="Code (ex. P3000)" required maxLength={20} /><input name="label" placeholder="Libellé" required maxLength={60} /><button className="btn">Ajouter</button></form>
+          <p className="muted">Pour suivre les évolutions fédérales : ajoutez ou désactivez, sans rien supprimer de l’historique.</p>
+        </section>))}
     </div></main>
   );
 }

@@ -51,5 +51,5 @@ export async function addProgress(fd: FormData) {
 export async function commentTournament(fd: FormData) {
   const svc = await guard();
   const p = z.object({ id: uuid, pid: uuid, comment: txt(1500) }).safeParse({ id: fd.get('id'), pid: fd.get('pid'), comment: fd.get('comment') ?? '' });
-  if (p.success) { await svc.from('tournaments').update({ coach_comment: p.data.comment }).eq('id', p.data.id); back(p.data.pid); }
+  if (p.success) { await svc.from('tournament_participations').update({ coach_comment: p.data.comment }).eq('id', p.data.id); back(p.data.pid); }
 }
