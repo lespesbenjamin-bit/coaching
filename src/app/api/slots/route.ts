@@ -4,7 +4,11 @@ import { serviceClient, isSupabaseConfigured } from '@/lib/supabase/admin';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
-  if (!isSupabaseConfigured()) return NextResponse.json({ error: 'not_configured' }, { status: 503 });
+  if (!isSupabaseConfigured()) {
+    // diagnostic : noms (jamais les valeurs) des variables absentes de cet environnement
+    const missing = ['NEXT_PUBLIC_SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'].filter(k => !process.env[k]);
+    return NextResponse.json({ error: 'not_configured', missing, vercelEnv: process.env.VERCEL_ENV ?? 'local' }, { status: 503 });
+  }
   const { searchParams } = new URL(req.url);
   const course = searchParams.get('course');
   let q = serviceClient().from('public_slots')
