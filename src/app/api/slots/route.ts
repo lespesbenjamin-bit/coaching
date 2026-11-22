@@ -15,10 +15,15 @@ export async function GET(req: Request) {
     .select('id,course_code,course_label,starts_at,ends_at,booking_mode,court_secured,capacity,seats_left,price_per_person_cents')
     .order('starts_at').limit(500);
   if (course && ['individuel', 'duo', 'collectif'].includes(course)) q = q.eq('course_code', course);
-  const [{ data, error }, { data: types }] = await Promise.all([
+  const [{ data, error }, { data: types, error: typesError }] = await Promise.all([
     q,
     serviceClient().from('course_types').select('code,label,min_participants,max_participants,default_duration_min,price_per_person_cents').eq('active', true),
   ]);
-  if (error) return NextResponse.json({ error: 'server_error' }, { status: 500 });
+  if (error || typesError) {
+    const e = error ?? typesError;
+    // détail technique visible uniquement hors production (aucune valeur secrète)
+    const detail = process.env.VERCEL_ENV === 'production' ? undefined : { code: e?.code, message: e?.message };
+    return NextResponse.json({ error: 'server_error', detail }, { status: 500 });
+  }
   return NextResponse.json({ slots: data, types: types ?? [] });
 }
