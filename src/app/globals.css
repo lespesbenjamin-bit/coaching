@@ -83,3 +83,6 @@ th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)}
 .grid2{display:grid;gap:20px}
 @media(min-width:900px){.grid2{grid-template-columns:2fr 1fr}}
 .scroll{overflow-x:auto}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin:0 0 20px;border-bottom:2px solid var(--black)}
+.tabs a{padding:10px 14px;text-decoration:none;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:#fff;border:1px solid var(--line);border-bottom:0}
+.tabs a.on{background:var(--black);color:var(--yellow);border-color:var(--black)}

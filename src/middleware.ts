@@ -6,7 +6,7 @@ import { supabaseUrl } from './lib/supabase/url';
 export async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname === '/admin/login') return NextResponse.next();
   const url = supabaseUrl(), anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
-  const toLogin = () => NextResponse.redirect(new URL('/admin/login', req.url));
+  const toLogin = () => NextResponse.redirect(new URL(req.nextUrl.pathname.startsWith('/admin') ? '/admin/login' : '/connexion', req.url));
   if (!url || !anon) return toLogin();
   let res = NextResponse.next({ request: req });
   const supa = createServerClient(url, anon, {
@@ -22,4 +22,4 @@ export async function middleware(req: NextRequest) {
   const { data } = await supa.auth.getUser();
   return data.user ? res : toLogin();
 }
-export const config = { matcher: ['/admin/:path*'] };
+export const config = { matcher: ['/admin/:path*', '/mon-espace/:path*'] };

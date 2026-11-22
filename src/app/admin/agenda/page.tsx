@@ -4,6 +4,7 @@ import { serviceClient } from '@/lib/supabase/admin';
 import { formatDay, formatTime, dayKey, euros } from '@/lib/dates';
 import { STATUS_LABELS, type BookingStatus } from '@/lib/booking-rules';
 import { BookingButtons, NoteField, SessionForm, DeleteSession } from './Actions';
+import AdminNav from '@/components/AdminNav';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Agenda — administration', robots: { index: false, follow: false } };
@@ -31,6 +32,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ v
 
   return (
     <main className="main"><div className="wrap">
+      <AdminNav current="agenda" />
       <div className="bar"><h1 style={{ fontSize: 30 }}>Agenda</h1>
         <form action={logout}><button className="btn ghost" style={{ padding: '8px 14px' }}>Déconnexion</button></form></div>
 
