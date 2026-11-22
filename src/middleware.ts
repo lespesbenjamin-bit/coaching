@@ -1,10 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
+import { supabaseUrl } from './lib/supabase/url';
 
 /** Première barrière : pas de session => login. La vérification "est admin" est refaite côté serveur dans chaque page et API. */
 export async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname === '/admin/login') return NextResponse.next();
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL, anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const url = supabaseUrl(), anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
   const toLogin = () => NextResponse.redirect(new URL('/admin/login', req.url));
   if (!url || !anon) return toLogin();
   let res = NextResponse.next({ request: req });
