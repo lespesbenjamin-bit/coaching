@@ -2,6 +2,7 @@
 -- Réutilise groups, group_memberships, training_cycles, sessions, bookings, attendance_records, credit_transactions (migration 003).
 
 -- ============ Colonnes ============
+alter table public.groups add column if not exists start_date date;
 alter table public.sessions add column if not exists validated_at timestamptz;
 alter table public.sessions add column if not exists validated_by uuid;
 alter table public.sessions add column if not exists counts_in_cycle boolean not null default true;   -- séance exceptionnelle incluse ou non dans le cycle (décision du coach)
