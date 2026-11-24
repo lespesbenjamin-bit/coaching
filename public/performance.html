@@ -979,7 +979,6 @@ h3,h4{ font-family: var(--font-body); font-style: normal; letter-spacing: 0; }
       <a href="index.html#individuel">Coaching individuel</a>
       <a href="index.html#collectifs">Cours collectifs</a>
       <a href="performance.html" style="color:#fff;">Performance & santé</a>
-      <a href="/connexion">Accès joueur</a>
       <a href="/admin/login">Accès coach</a>
       <a href="index.html#apropos">À propos</a>
       <a href="index.html#contact">Contact</a>
@@ -998,7 +997,6 @@ h3,h4{ font-family: var(--font-body); font-style: normal; letter-spacing: 0; }
   <a href="index.html#individuel">Coaching individuel</a>
   <a href="index.html#collectifs">Cours collectifs</a>
   <a href="performance.html">Performance & santé</a>
-  <a href="/connexion">Accès joueur</a>
   <a href="/admin/login">Accès coach</a>
   <a href="index.html#apropos">À propos</a>
   <a href="index.html#contact">Contact</a>
@@ -1158,7 +1156,7 @@ const performanceData = {
 
   // ---- LIENS ----
   links: {
-    bookMyCoach: "https://bookmycoach.vercel.app/c/benjamin-lespes",
+    bookMyCoach: "https://www.bookmycoach.pro/c/benjamin-lespes",
     whatsapp: "https://wa.me/33679096574",
     instagram: "https://www.instagram.com/pepes_24/",
     contact: "index.html#contact" // cible du bouton "Prendre contact"
@@ -1199,7 +1197,7 @@ const performanceData = {
 
   /* ---- Liens (BookMyCoach / WhatsApp / Instagram) ---- */
   const bookLinks = ["nav-book-btn", "nav-book-btn-mobile", "footerBookLink", "mobileBarBookBtn"];
-  bookLinks.forEach(id => setHref(id, id === "contactBookBtn" ? performanceData.links.bookMyCoach : "/reservation"));
+  bookLinks.forEach(id => setHref(id, performanceData.links.bookMyCoach));
   setHref("footerWhatsappLink", performanceData.links.whatsapp);
   setHref("mobileBarWhatsappBtn", performanceData.links.whatsapp);
   setHref("footerInstagramLink", performanceData.links.instagram);

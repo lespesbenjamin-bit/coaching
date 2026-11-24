@@ -1126,7 +1126,6 @@ h3,h4{ font-family: var(--font-body); font-style: normal; letter-spacing: 0; }
       <a href="#individuel">Coaching individuel</a>
       <a href="#collectifs">Cours collectifs</a>
       <a href="performance.html">Performance & santé</a>
-      <a href="/connexion">Accès joueur</a>
       <a href="/admin/login">Accès coach</a>
       <a href="#apropos">À propos</a>
       <a href="#contact">Contact</a>
@@ -1145,7 +1144,6 @@ h3,h4{ font-family: var(--font-body); font-style: normal; letter-spacing: 0; }
   <a href="#individuel">Coaching individuel</a>
   <a href="#collectifs">Cours collectifs</a>
   <a href="performance.html">Performance & santé</a>
-  <a href="/connexion">Accès joueur</a>
   <a href="/admin/login">Accès coach</a>
   <a href="#apropos">À propos</a>
   <a href="#contact">Contact</a>
@@ -1543,7 +1541,7 @@ const siteData = {
   // ---- LIENS — ⚠️ À REMPLACER AVANT LA MISE EN LIGNE ⚠️ ----
   // ⚠️⚠️⚠️ REMPLACER CES 3 LIENS PAR LES VRAIES URLS AVANT MISE EN LIGNE ⚠️⚠️⚠️
   links: {
-    bookMyCoach: "https://bookmycoach.vercel.app/c/benjamin-lespes",
+    bookMyCoach: "https://www.bookmycoach.pro/c/benjamin-lespes",
     whatsapp: "https://wa.me/33679096574",
     instagram: "https://www.instagram.com/pepes_24/"
   },
@@ -1685,7 +1683,7 @@ const siteData = {
 
   /* ---- Liens (BookMyCoach / WhatsApp / Instagram) ---- */
   const bookLinks = ["nav-book-btn", "nav-book-btn-mobile", "hero-book-btn", "soloBookBtn", "contactBookBtn", "footerBookLink", "mobileBarBookBtn"];
-  bookLinks.forEach(id => setHref(id, id === "contactBookBtn" ? siteData.links.bookMyCoach : "/reservation"));
+  bookLinks.forEach(id => setHref(id, siteData.links.bookMyCoach));
 
   function whatsappBaseLink(message){
     if(siteData.links.whatsapp === "#") return "#";
