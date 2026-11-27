@@ -111,8 +111,11 @@ end $$;
 
 alter table public.voucher_products enable row level security;
 alter table public.gift_vouchers enable row level security;
+drop policy if exists admin_all on public.voucher_products;
 create policy admin_all on public.voucher_products for all to authenticated using (public.is_admin()) with check (public.is_admin());
+drop policy if exists admin_all on public.gift_vouchers;
 create policy admin_all on public.gift_vouchers for all to authenticated using (public.is_admin()) with check (public.is_admin());
+drop policy if exists products_read on public.voucher_products;
 create policy products_read on public.voucher_products for select to anon, authenticated using (active);
 do $$ declare t text; begin
   for t in select p.oid::regprocedure::text from pg_proc p join pg_namespace n on n.oid = p.pronamespace
