@@ -3,7 +3,8 @@ import { serviceClient, isSupabaseConfigured } from '@/lib/supabase/admin';
 import { supabaseUrl } from '@/lib/supabase/url';
 import { pickActive, spotlightHtml, type Campaign } from '@/lib/campaigns';
 
-export const mediaUrl = (path: string | null) => (path ? `${supabaseUrl()}/storage/v1/object/public/campaign-media/${path}` : null);
+/** Image du site (chemin « /img/… ») ou fichier importé dans l'administration (stockage Supabase). */
+export const mediaUrl = (path: string | null) => (path ? (path.startsWith('/') && !path.startsWith('//') ? path : `${supabaseUrl()}/storage/v1/object/public/campaign-media/${path}`) : null);
 
 /** Prix (en centimes) de la formule liée : la même valeur que celle facturée à l'achat. */
 export async function productPrice(code: string | null) {

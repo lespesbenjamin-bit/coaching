@@ -31,18 +31,20 @@ describe('campagnes', () => {
   });
   it('HTML : mot en vert, échappement, aperçu sans script', () => {
     const h = spotlightHtml({ campaign: base, productPriceCents: 20000 });
-    expect(h).toContain('offrez du <em>padel</em>.'); expect(h).toContain('200 €'); expect(h).not.toContain('<s>'); expect(h).toContain('<script>');
+    expect(h).toContain('Cette année,<br>offrez du <em>padel</em>.'); expect(h).toContain('200 €'); expect(h).not.toContain('<s>'); expect(h).toContain('<script>');
     const x = spotlightHtml({ campaign: { ...base, title: '<img src=x onerror=alert(1)>', highlight: null, description: '"><script>1</script>' } }, { preview: true });
     expect(x).not.toContain('<img src=x'); expect(x).not.toContain('<script>'); expect(x).toContain('href="#"');
     expect(spotlightHtml({ campaign: { ...base, show_reference: true }, productPriceCents: 20000 })).toContain('Vous économisez 25 €');
   });
   it('formulaire : validation', () => {
-    const ok = { name: 'N', eyebrow: '', title: 'T', highlight: '', description: '', voucher_product: 'pack5', price: '', reference: '225', show_reference: 'on', cta_label: 'Go', cta_url: '/bon-cadeau', reassurance: '', starts_on: '', ends_on: '2026-12-31', priority: '10' };
+    const ok = { name: 'N', eyebrow: '', title: 'T', highlight: '', description: '', voucher_product: 'pack5', price: '', reference: '225', show_reference: 'on', cta_label: 'Go', cta_url: '/bon-cadeau', reassurance: '', bg_color: '', starts_on: '', ends_on: '2026-12-31', priority: '10' };
     const p = campaignInput.safeParse(ok); expect(p.success).toBe(true); if (p.success) { expect(p.data.reference).toBe(22500); expect(p.data.show_reference).toBe(true); expect(p.data.starts_on).toBeNull(); }
     expect(campaignInput.safeParse({ ...ok, cta_url: '//evil.example' }).success).toBe(false);
     expect(campaignInput.safeParse({ ...ok, cta_url: 'javascript:alert(1)' }).success).toBe(false);
     expect(campaignInput.safeParse({ ...ok, starts_on: '2026-12-31', ends_on: '2026-12-01' }).success).toBe(false);
     expect(campaignInput.safeParse({ ...ok, reference: '' }).success).toBe(false);
     expect(campaignInput.safeParse({ ...ok, priority: '500' }).success).toBe(false);
+    expect(campaignInput.safeParse({ ...ok, bg_color: '#F0EDE6' }).success).toBe(true);
+    expect(campaignInput.safeParse({ ...ok, bg_color: 'url(x)' }).success).toBe(false);
   });
 });
