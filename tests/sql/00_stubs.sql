@@ -10,3 +10,7 @@ create or replace function auth.uid() returns uuid language sql stable as $$ sel
 grant usage on schema public, auth to anon, authenticated, service_role;
 alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
 alter default privileges in schema public grant execute on functions to anon, authenticated, service_role;
+
+-- Supabase Storage (stub minimal : seule la table des buckets est utilisée par les migrations)
+create schema if not exists storage;
+create table if not exists storage.buckets (id text primary key, name text, public boolean default false);

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 const parisToday = () => new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Paris' }).format(new Date());
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ annule?: string }> }) {
+export default async function Page({ searchParams }: { searchParams: Promise<{ annule?: string; offre?: string; c?: string }> }) {
   const sp = await searchParams; const today = parisToday();
   const { data } = isSupabaseConfigured() ? await serviceClient().from('voucher_products').select('*').eq('active', true).order('sort') : { data: [] as any[] };
   const products: Product[] = ((data ?? []) as any[]).map(p => ({
@@ -49,7 +49,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
         <div className="bc-wrap">
           {sp.annule && <div className="bc-notice" role="status">Paiement annulé : aucun montant n’a été débité. Vos informations sont conservées, vous pouvez reprendre.</div>}
           {products.length > 0
-            ? <Configurator products={products} paymentEnabled={stripeConfigured()} cancelled={!!sp.annule} />
+            ? <Configurator products={products} paymentEnabled={stripeConfigured()} cancelled={!!sp.annule} initialProduct={products.find(p => p.code === sp.offre)?.code} campaign={/^[0-9a-f-]{36}$/i.test(sp.c ?? '') ? sp.c : undefined} />
             : <div className="bc-empty">Les bons cadeaux ne sont pas disponibles pour le moment.</div>}
         </div>
       </section>

@@ -18,9 +18,9 @@ const tier = (p: Product) => TIERS[p.code] ?? { name: p.label, title: `${p.credi
 const KEY = 'bc-draft-v1';
 const ICON: Record<string, string> = { one: 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21a8 8 0 0 1 16 0', group: 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM17 10a2.5 2.5 0 1 0 0-5M3 20a6 6 0 0 1 12 0M16 14a5 5 0 0 1 5 5', gift: 'M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H7.5a2.5 2.5 0 1 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 1 0 0-5C13 2 12 7 12 7Z' };
 
-export default function Configurator({ products, paymentEnabled, cancelled }: { products: Product[]; paymentEnabled: boolean; cancelled: boolean }) {
+export default function Configurator({ products, paymentEnabled, cancelled, initialProduct, campaign }: { products: Product[]; paymentEnabled: boolean; cancelled: boolean; initialProduct?: string; campaign?: string }) {
   const [step, setStep] = useState(0);
-  const [d, setD] = useState<Draft>({ product: products[0].code, recipient: '', message: '', name: '', email: '' });
+  const [d, setD] = useState<Draft>({ product: initialProduct ?? products[0].code, recipient: '', message: '', name: '', email: '' });
   const [accept, setAccept] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [busy, setBusy] = useState(false); const [apiError, setApiError] = useState('');
@@ -28,7 +28,7 @@ export default function Configurator({ products, paymentEnabled, cancelled }: { 
 
   // Les informations saisies survivent à un retour depuis la page de paiement (stockage de session, jamais de données bancaires)
   useEffect(() => {
-    try { const s = sessionStorage.getItem(KEY); if (s) { const v = JSON.parse(s) as Draft; if (products.some(p => p.code === v.product)) { setD(v); if (cancelled) setStep(3); } } } catch { /* ignoré */ }
+    try { const s = sessionStorage.getItem(KEY); if (s) { const v = JSON.parse(s) as Draft; if (products.some(p => p.code === v.product)) { setD(initialProduct && !cancelled ? { ...v, product: initialProduct } : v); if (cancelled) setStep(3); } } } catch { /* ignoré */ }
   }, [products, cancelled]);
   useEffect(() => { try { sessionStorage.setItem(KEY, JSON.stringify(d)); } catch { /* ignoré */ } }, [d]);
   useEffect(() => { if (first.current) { first.current = false; return; } heading.current?.focus({ preventScroll: true }); }, [step]);
@@ -54,7 +54,7 @@ export default function Configurator({ products, paymentEnabled, cancelled }: { 
     const e = { ...validate(0), ...validate(1), ...validate(2), ...validate(3) }; if (Object.keys(e).length) { setErrors(e); if (e.name || e.email) setStep(2); return; }
     sending.current = true; setBusy(true); setApiError('');
     try {
-      const r = await fetch('/api/vouchers/checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ product: d.product, buyer_name: d.name.trim(), buyer_email: d.email.trim(), recipient_name: d.recipient.trim(), message: d.message.trim(), accept: true, website: '' }) });
+      const r = await fetch('/api/vouchers/checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ product: d.product, buyer_name: d.name.trim(), buyer_email: d.email.trim(), recipient_name: d.recipient.trim(), message: d.message.trim(), accept: true, website: '', ...(campaign ? { campaign } : {}) }) });
       const j = await r.json().catch(() => ({}));
       if (!r.ok || !j.url) { setApiError(j.error ?? 'Une erreur est survenue. Réessayez.'); sending.current = false; setBusy(false); return; }
       window.location.href = j.url;
