@@ -36,6 +36,13 @@ describe('campagnes', () => {
     expect(x).not.toContain('<img src=x'); expect(x).not.toContain('<script>'); expect(x).toContain('href="#"');
     expect(spotlightHtml({ campaign: { ...base, show_reference: true }, productPriceCents: 20000 })).toContain('Vous économisez 25 €');
   });
+  it('formules : liens de présélection, formule de la campagne mise en avant, masquées par défaut', () => {
+    const f = [{ code: 'single', credits: 1, price_cents: 4500, promo: null }, { code: 'pack5', credits: 5, price_cents: 20000, promo: 'Offre de Noël' }];
+    expect(spotlightHtml({ campaign: base, formulas: f })).not.toContain('evs-formulas');
+    const h = spotlightHtml({ campaign: { ...base, show_formulas: true }, formulas: f });
+    expect(h).toContain('/bon-cadeau?offre=single&amp;c=11111111-1111-4111-8111-111111111111'); expect(h).toContain('class="evs-f is-on"'); expect(h).toContain('45\u00a0€'); expect(h).toContain('Offre de Noël');
+    expect(spotlightHtml({ campaign: { ...base, show_formulas: true }, formulas: f }, { preview: true })).not.toContain('/bon-cadeau?offre');
+  });
   it('formulaire : validation', () => {
     const ok = { name: 'N', eyebrow: '', title: 'T', highlight: '', description: '', voucher_product: 'pack5', price: '', reference: '225', show_reference: 'on', cta_label: 'Go', cta_url: '/bon-cadeau', reassurance: '', bg_color: '', starts_on: '', ends_on: '2026-12-31', priority: '10' };
     const p = campaignInput.safeParse(ok); expect(p.success).toBe(true); if (p.success) { expect(p.data.reference).toBe(22500); expect(p.data.show_reference).toBe(true); expect(p.data.starts_on).toBeNull(); }

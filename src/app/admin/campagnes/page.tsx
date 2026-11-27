@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { getAdminUser } from '@/lib/auth';
 import { serviceClient } from '@/lib/supabase/admin';
 import { campaignState, eur, parisToday, pricing, spotlightHtml, type Campaign, type CampaignState } from '@/lib/campaigns';
-import { mediaUrl } from '@/lib/campaigns-server';
+import { mediaUrl, activeFormulas } from '@/lib/campaigns-server';
 import AdminNav from '@/components/AdminNav';
 import Flash from '@/components/Flash';
 import ConfirmButton from '@/components/ConfirmButton';
@@ -28,6 +28,8 @@ function Fields({ c, products }: { c?: Campaign; products: Product[] }) {
     <label>Prix de référence en € (ex. 225)<input name="reference" inputMode="decimal" defaultValue={c?.reference_price_cents ? String(c.reference_price_cents / 100) : ''} /></label>
     <label className="row-actions" style={{ alignItems: 'flex-start', gap: 8 }}><input type="checkbox" name="show_reference" defaultChecked={c?.show_reference ?? false} style={{ width: 'auto' }} />
       <span>Afficher le prix de référence barré et l’économie. À n’activer que si ce prix est un vrai prix de référence : il doit avoir été réellement pratiqué avant la promotion.</span></label>
+    <label className="row-actions" style={{ alignItems: 'flex-start', gap: 8 }}><input type="checkbox" name="show_formulas" defaultChecked={c?.show_formulas ?? false} style={{ width: 'auto' }} />
+      <span>Afficher toutes les formules de bons cadeaux (1, 3 et 5 cours, avec leurs prix) sous le bouton.</span></label>
     <label>Texte du bouton<input name="cta_label" required maxLength={40} defaultValue={c?.cta_label ?? 'Offrir ce bon cadeau'} /></label>
     <label>Destination du bouton (/bon-cadeau ou https://…)<input name="cta_url" required maxLength={300} defaultValue={c?.cta_url ?? '/bon-cadeau'} /></label>
     <label>Réassurance sous le bouton<input name="reassurance" maxLength={80} defaultValue={c?.reassurance ?? ''} /></label>
@@ -51,6 +53,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ o
   ]);
   const products = (pr ?? []) as Product[]; const priceOf = new Map(products.map(p => [p.code, p.price_cents]));
   const list = (cs ?? []) as Campaign[];
+  const formulas = error ? [] : await activeFormulas();
   const stats = (id: string) => {
     const s = (st ?? []).filter(x => x.campaign_id === id), v = (vs ?? []).filter(x => x.campaign_id === id);
     const impressions = s.reduce((a, x) => a + x.impressions, 0), clicks = s.reduce((a, x) => a + x.clicks, 0);
@@ -69,7 +72,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ o
         <section>
           {list.length === 0 ? <div className="panel empty">Aucune campagne. Créez la première avec le formulaire.</div> : list.map(c => {
             const state = campaignState(c, today), s = stats(c.id), pz = pricing(c, c.voucher_product ? priceOf.get(c.voucher_product) : null);
-            const html = spotlightHtml({ campaign: c, productPriceCents: c.voucher_product ? priceOf.get(c.voucher_product) : null, mediaUrl: mediaUrl(c.media_path) }, { preview: true });
+            const html = spotlightHtml({ campaign: c, productPriceCents: c.voucher_product ? priceOf.get(c.voucher_product) : null, mediaUrl: mediaUrl(c.media_path), formulas }, { preview: true });
             return (
               <details key={c.id} className="panel" style={{ padding: 14, marginBottom: 10 }}>
                 <summary style={{ cursor: 'pointer' }}><b>{c.name}</b> <span className={`badge ${state === 'live' ? 'ok' : ''}`}>{LABEL[state]}</span>
