@@ -24,8 +24,8 @@ describe('campagnes', () => {
     expect(pricing({ ...base, show_reference: true, reference_price_cents: 15000 }, 20000).reference).toBeNull();
   });
   it('lien du bouton : présélection + attribution, jamais de prix', () => {
-    expect(ctaHref(base)).toBe('/bon-cadeau?offre=pack5&c=11111111-1111-4111-8111-111111111111#configurateur');
-    expect(ctaHref({ ...base, voucher_product: null })).toBe('/bon-cadeau?c=11111111-1111-4111-8111-111111111111#configurateur');
+    expect(ctaHref(base)).toBe('/bon-cadeau?offre=pack5&c=11111111-1111-4111-8111-111111111111');
+    expect(ctaHref({ ...base, voucher_product: null })).toBe('/bon-cadeau?c=11111111-1111-4111-8111-111111111111');
     expect(ctaHref({ ...base, cta_url: 'https://exemple.fr/x' })).toBe('https://exemple.fr/x');
     expect(ctaHref(base)).not.toMatch(/prix|price|amount/i);
   });

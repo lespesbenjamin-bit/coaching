@@ -30,13 +30,12 @@ export function pricing(c: Campaign, productPriceCents?: number | null) {
   const ref = c.show_reference && price && c.reference_price_cents && c.reference_price_cents > price ? c.reference_price_cents : null;
   return { price: price ?? null, reference: ref, saving: ref && price ? ref - price : null };
 }
-/** Lien du bouton : pour une page du site, on ajoute la formule à présélectionner et l'identifiant de campagne (attribution). Le prix, lui, reste décidé par le serveur. */
+/** Lien du bouton : pour une page du site, on ajoute la formule à présélectionner et l'identifiant de campagne (attribution). Le prix, lui, reste décidé par le serveur. La page s'ouvre en haut (pas d'ancre). */
 export function ctaHref(c: Pick<Campaign, 'id' | 'cta_url' | 'voucher_product'>) {
   if (!c.cta_url.startsWith('/')) return c.cta_url;
   const u = new URL(c.cta_url, 'https://x.invalid');
   if (c.voucher_product) u.searchParams.set('offre', c.voucher_product);
   u.searchParams.set('c', c.id);
-  if (u.pathname === '/bon-cadeau' && !u.hash) u.hash = '#configurateur';
   return `${u.pathname}${u.search}${u.hash}`;
 }
 
