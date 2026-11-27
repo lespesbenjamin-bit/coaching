@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 const input = z.object({
   product: z.string().min(1).max(40), buyer_name: z.string().trim().min(2).max(80), buyer_email: z.string().trim().toLowerCase().email().max(120),
   recipient_name: z.string().trim().max(80).optional().default(''), message: z.string().trim().max(400).optional().default(''),
-  accept: z.literal(true), website: z.string().max(0).optional(),
+  accept: z.literal(true), website: z.string().max(0).optional(), campaign: z.string().uuid().optional(),
 });
 
 export async function POST(req: Request) {
@@ -26,6 +26,7 @@ export async function POST(req: Request) {
     if (!error) id = data; else if (error.code === 'P0090') return NextResponse.json({ error: 'Cette formule n’est plus disponible.' }, { status: 400 }); else if (error.code !== '23505') break;
   }
   if (!id) return NextResponse.json({ error: 'Impossible de préparer le bon. Réessayez.' }, { status: 500 });
+  if (p.data.campaign) await svc.from('gift_vouchers').update({ campaign_id: p.data.campaign }).eq('id', id).then(() => undefined, () => undefined);   // attribution facultative : sans effet si la campagne n'existe pas
   const { data: v } = await svc.from('gift_vouchers').select('label,amount_cents').eq('id', id).single();
   const origin = new URL(req.url).origin;
   try {
