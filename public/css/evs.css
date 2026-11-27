@@ -1,41 +1,50 @@
-/* Podium événementiel — styles isolés sous .evs ; la police Inter n'est chargée que pour cette section */
+/* Podium événementiel (version claire) — styles isolés sous .evs ; la police Inter n'est chargée que pour cette section */
 @font-face{font-family:"Inter EVS";src:url(/fonts/inter-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
-.evs{--v:#d9ff3f;--vd:#b8db1f;--k:#0b0d0c;--ks:#15181a;--paper:#f4f4f1;
-  position:relative;isolation:isolate;overflow:hidden;background:var(--k);color:#fff;
+.evs{--k:#101210;--k2:#555752;--v:#d9ff3f;--ol:#758f07;--outer:#f7f6f2;--pod:#f0ede6;
+  background:var(--outer);padding:clamp(24px,3.5vw,48px) 4%;color:var(--k);
   font-family:"Inter EVS",Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-style:normal;font-stretch:100%;letter-spacing:0;line-height:1.5;text-transform:none;text-align:left}
 .evs *{box-sizing:border-box}
 .evs h2,.evs p{margin:0}
-.evs-bg{position:absolute;inset:0;z-index:-1;background:radial-gradient(55% 80% at 78% 50%,rgba(217,255,63,.16),transparent 65%),radial-gradient(40% 50% at 0 100%,rgba(217,255,63,.08),transparent 60%),linear-gradient(135deg,#0b0d0c,#10140f 60%,#0b0d0c)}
-.evs-bg::after{content:"";position:absolute;inset:0;opacity:.45;background:repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 64px),repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 64px);-webkit-mask-image:linear-gradient(100deg,transparent 15%,#000 80%);mask-image:linear-gradient(100deg,transparent 15%,#000 80%)}
-.evs-wrap{max-width:1240px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(18px,4vw,48px);display:grid;gap:clamp(24px,4vw,56px);align-items:center;grid-template-columns:1fr}
-@media(min-width:860px){.evs-wrap{grid-template-columns:1.02fr .98fr}}
-.evs-kicker{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6)}
-.evs p.evs-edition{display:inline-block;margin-top:12px;padding:6px 14px;border:1px solid rgba(217,255,63,.5);border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--v)}
-.evs h2{margin-top:18px;font-size:clamp(34px,5.4vw,64px);font-weight:700;line-height:1.04;letter-spacing:-.03em;color:#fff;font-family:inherit;font-style:normal;text-transform:none}
-.evs h2 em{font-style:normal;color:var(--v)}
-.evs p.evs-desc{margin-top:18px;max-width:30em;font-size:clamp(16px,1.7vw,19px);color:rgba(255,255,255,.8)}
-.evs-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin-top:26px}
-.evs-now{font-size:clamp(46px,6vw,68px);font-weight:800;letter-spacing:-.04em;line-height:1;color:#fff}
-.evs-was{font-size:20px;color:rgba(255,255,255,.55)}.evs-was s{text-decoration-thickness:2px}
-.evs-save{padding:5px 12px;border-radius:999px;background:rgba(217,255,63,.14);color:var(--v);font-size:13px;font-weight:700}
+.evs-podium{position:relative;overflow:hidden;max-width:1400px;margin:0 auto;background:var(--evs-pod,var(--pod));display:grid;grid-template-columns:45fr 55fr;min-height:440px;box-shadow:0 28px 60px -34px rgba(70,55,25,.4),0 1px 0 rgba(16,18,16,.04)}
+.evs-podium--text{grid-template-columns:1fr}
+.evs-copy{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:clamp(28px,3.4vw,48px) clamp(28px,4vw,56px)}
+.evs p.evs-kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--k)}
+.evs p.evs-edition{display:inline-flex;align-items:center;gap:9px;margin-top:14px;padding:8px 14px;border-radius:8px;background:rgba(217,255,63,.62);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--k)}
+.evs h2{margin-top:14px;font-size:clamp(32px,4.1vw,54px);font-weight:700;line-height:1.06;letter-spacing:-.03em;color:var(--k);font-family:inherit;font-style:normal;text-transform:none}
+.evs h2 em{font-style:normal;color:var(--ol)}
+.evs p.evs-desc{margin-top:14px;max-width:30em;font-size:clamp(16px,1.5vw,18px);font-weight:400;color:var(--k2)}
+.evs-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin-top:18px}
+.evs-now{font-size:clamp(48px,5vw,62px);font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--k)}
+.evs-was{font-size:clamp(20px,2vw,26px);font-weight:600;color:var(--k2)}.evs-was s{text-decoration-thickness:2px}
+.evs-save{padding:4px 11px;border-radius:999px;background:rgba(217,255,63,.62);color:var(--k);font-size:13px;font-weight:600}
 .evs-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.evs-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:28px;min-height:56px;padding:0 30px;border-radius:16px;background:var(--v);color:var(--k);font-size:17px;font-weight:700;text-decoration:none;box-shadow:0 12px 30px rgba(217,255,63,.28);transition:transform .18s,box-shadow .18s,background .18s}
-.evs-btn:hover{transform:translateY(-2px);background:#e6ff6e;box-shadow:0 16px 36px rgba(217,255,63,.4)}
-.evs-btn svg{transition:transform .18s}.evs-btn:hover svg{transform:translateX(4px)}
-.evs-btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.evs p.evs-note{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;color:rgba(255,255,255,.7)}.evs-note svg{color:var(--v);flex:none}
-.evs-visual{display:grid;place-items:center;min-width:0}
-.evs-scene,.evs-img{width:100%;max-width:600px;height:auto;display:block;border-radius:24px}
-.evs-img{object-fit:cover;aspect-ratio:640/520;box-shadow:0 30px 60px rgba(0,0,0,.5)}
-.evs-scene{animation:evs-float 7s ease-in-out infinite;overflow:visible}
-@keyframes evs-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.evs[data-anim] .evs-copy,.evs[data-anim] .evs-visual{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
-.evs[data-anim] .evs-visual{transition-delay:.12s}
+.evs-btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;margin-top:22px;min-height:56px;padding:0 30px;border-radius:18px;background:var(--v);color:var(--k);font-size:18px;font-weight:600;text-decoration:none;box-shadow:0 1px 0 rgba(16,18,16,.08);transition:transform .2s ease,background .2s ease,box-shadow .2s ease}
+.evs-btn:hover{transform:translateY(-1px);background:#cdf22d;box-shadow:0 8px 18px -8px rgba(80,100,0,.45)}
+.evs-btn svg{transition:transform .2s ease}.evs-btn:hover svg{transform:translateX(3px)}
+.evs-btn:focus-visible{outline:3px solid var(--k);outline-offset:3px}
+.evs p.evs-note{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:14px;font-weight:500;color:var(--k2)}.evs-note svg{color:var(--k);flex:none}
+.evs-visual{position:relative;min-width:0}
+.evs-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:0% 35%;display:block;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 9%);mask-image:linear-gradient(90deg,transparent 0,#000 9%)}
+.evs[data-anim] .evs-copy,.evs[data-anim] .evs-visual{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.evs[data-anim] .evs-visual{transition-delay:.1s}
 .evs[data-anim].is-in .evs-copy,.evs[data-anim].is-in .evs-visual{opacity:1;transform:none}
-@media(max-width:859px){
-  .evs-wrap{padding:36px 18px 40px;gap:20px}
+@media(max-width:699px){
+  .evs{padding:24px 16px}
+  .evs-podium{grid-template-columns:1fr;min-height:0;border-radius:24px}
+  .evs-visual{order:-1;aspect-ratio:770/595}
+  .evs-img{-webkit-mask-image:linear-gradient(180deg,#000 78%,transparent);mask-image:linear-gradient(180deg,#000 78%,transparent)}
+  .evs-copy{padding:2px 20px 28px;align-items:stretch}
   .evs-btn{width:100%;min-height:58px}
-  .evs-now{font-size:56px}
-  .evs-scene,.evs-img{max-width:420px}
+  .evs p.evs-edition{align-self:flex-start}
 }
 @media(prefers-reduced-motion:reduce){.evs *{animation:none!important;transition:none!important}}
+
+/* Le site impose border-radius:0 !important sur tous les éléments : on le surcharge uniquement pour cette section */
+.evs .evs-podium{border-radius:28px!important}
+.evs .evs-btn{border-radius:18px!important}
+.evs p.evs-edition{border-radius:8px!important}
+.evs .evs-save{border-radius:999px!important}
+@media(max-width:699px){.evs .evs-podium{border-radius:24px!important}}
+@media(min-width:700px) and (max-width:959px){.evs-copy{padding:28px 24px}.evs h2{font-size:34px}.evs-now{font-size:48px}.evs-btn{padding:0 22px;font-size:17px}}
+@media(min-width:700px) and (max-width:959px){.evs-img{object-position:68% 35%}}

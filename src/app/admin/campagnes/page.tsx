@@ -31,8 +31,9 @@ function Fields({ c, products }: { c?: Campaign; products: Product[] }) {
     <label>Texte du bouton<input name="cta_label" required maxLength={40} defaultValue={c?.cta_label ?? 'Offrir ce bon cadeau'} /></label>
     <label>Destination du bouton (/bon-cadeau ou https://…)<input name="cta_url" required maxLength={300} defaultValue={c?.cta_url ?? '/bon-cadeau'} /></label>
     <label>Réassurance sous le bouton<input name="reassurance" maxLength={80} defaultValue={c?.reassurance ?? ''} /></label>
-    <label>Visuel (JPEG, PNG ou WebP, 2 Mo max, format 640×520 conseillé). Sans image, le coffret illustré est affiché.<input type="file" name="image" accept="image/jpeg,image/png,image/webp" /></label>
+    <label>Visuel (JPEG, PNG ou WebP, 2 Mo max, environ 1400×1080, fond clair qui se fond dans le podium). Sans image, le podium s’affiche en pleine largeur, sans visuel.<input type="file" name="image" accept="image/jpeg,image/png,image/webp" /></label>
     {c?.media_path && <label className="row-actions" style={{ gap: 8 }}><input type="checkbox" name="remove_image" style={{ width: 'auto' }} /> Retirer l’image actuelle</label>}
+    <label>Couleur de fond du podium (clair uniquement, ex. #F0EDE6 ; vide = beige par défaut)<input name="bg_color" maxLength={7} placeholder="#F0EDE6" defaultValue={c?.bg_color ?? ''} /></label>
     <label>Début (facultatif)<input type="date" name="starts_on" defaultValue={c?.starts_on ?? ''} /></label>
     <label>Fin, jour inclus (facultatif)<input type="date" name="ends_on" defaultValue={c?.ends_on ?? ''} /></label>
     <label>Priorité (0 à 100 ; en cas de chevauchement, la plus haute s’affiche)<input name="priority" inputMode="numeric" required defaultValue={c?.priority ?? 0} /></label>
